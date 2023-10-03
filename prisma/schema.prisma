@@ -1,0 +1,193 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                 String    @id @default(cuid())
+  userId             String
+  providerType       String
+  providerId         String
+  providerAccountId  String
+  refreshToken       String?
+  accessToken        String?
+  accessTokenExpires DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  user               User      @relation(fields: [userId], references: [id])
+
+  @@unique([providerId, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  userId       String
+  expires      DateTime
+  sessionToken String   @unique
+  accessToken  String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  accounts      Account[]
+  sessions      Session[]
+  Company       Company?  @relation(fields: [companyId], references: [id])
+  companyId     String?
+}
+
+model VerificationRequest {
+  id         String   @id @default(cuid())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([identifier, token])
+}
+
+model Job {
+  id                  String        @id @default(cuid())
+  title               String
+  description         String        @default("")
+  country             String        @default("")
+  city                String        @default("")
+  postedAt            DateTime      @default(now())
+  applicationDeadline DateTime?
+  employmentType      String        @default("Full-time")
+  salary              Int           @default(0)
+  currency            String        @default("EUR")
+  requirements        String        @default("")
+  responsibilities    String        @default("")
+  experienceLevel     String        @default("Senior")
+  industry            String? // Industry of the job (e.g., IT, Healthcare, Finance) (optional)
+  jobType             String        @default("Hybrid")
+  skillsRequired      String[]      @default([])
+  benefits            String?
+  quota               Int           @default(1)
+  // Relationships
+  company             Company       @relation(fields: [companyId], references: [id])
+  companyId           String
+  stages              Stage[]
+  active              Boolean       @default(false)
+  CustomField         CustomField[]
+}
+
+model Stage {
+  id         String      @id @default(cuid())
+  title      String
+  color      String
+  order      Int
+  // Relationships
+  job        Job         @relation(fields: [jobId], references: [id])
+  jobId      String
+  candidates Candidate[]
+}
+
+model Company {
+  id      String @id @default(cuid())
+  name    String
+  website String
+  headId  String @unique
+  // Additional fields for company-related information
+  // Example: industry, headquarters location, company size, etc.
+  // Relationships
+  jobs    Job[] // A company can have multiple job listings
+  user    User[]
+}
+
+model TitleField {
+  value         String      @default("")
+  customField   CustomField @relation(fields: [customFieldId], references: [id], onDelete: Cascade)
+  customFieldId String      @id
+}
+
+model ParagraphField {
+  value         String
+  customField   CustomField @relation(fields: [customFieldId], references: [id], onDelete: Cascade)
+  customFieldId String      @id
+}
+
+model RadioField {
+  label         String
+  orientation   Orientation
+  value         String[]
+  customField   CustomField @relation(fields: [customFieldId], references: [id], onDelete: Cascade)
+  customFieldId String      @id
+}
+
+model DropdownField {
+  label         String
+  value         String[]
+  customField   CustomField @relation(fields: [customFieldId], references: [id], onDelete: Cascade)
+  customFieldId String      @id
+}
+
+model FormField {
+  label         String
+  customField   CustomField @relation(fields: [customFieldId], references: [id], onDelete: Cascade)
+  customFieldId String      @id
+}
+
+model GridField {
+  value         CustomField[] @relation(name: "parentGridField")
+  customField   CustomField   @relation(name: "gridField", fields: [customFieldId], references: [id], onDelete: Cascade)
+  customFieldId String        @id
+}
+
+model CustomField {
+  id                String          @id @default(cuid())
+  valueType         ValueType
+  formField         FormField?
+  titleField        TitleField?
+  paragraphField    ParagraphField?
+  radioField        RadioField?
+  dropdownField     DropdownField?
+  gridField         GridField?      @relation(name: "gridField")
+  parentGridField   GridField?      @relation(name: "parentGridField", fields: [parentGridFieldId], references: [customFieldId])
+  parentGridFieldId String?
+  job               Job             @relation(fields: [jobId], references: [id])
+  jobId             String
+}
+
+enum ValueType {
+  TITLE
+  PARAGRAPH
+  RADIO
+  DROPDOWN
+  GRID
+  FORM
+}
+
+enum Orientation {
+  HORIZONTAL
+  VERTICAL
+}
+
+model Candidate {
+  id        String @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String
+  phone     String
+  // Relationships
+  stage     Stage  @relation(fields: [stageId], references: [id])
+  stageId   String
+}

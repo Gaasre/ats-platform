@@ -1,0 +1,18 @@
+{
+    "typescript.tsdk": "node_modules\\typescript\\lib",
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": true
+            },
+            "previewLimit": 50,
+            "server": "poor-caracal-10151.8nj.cockroachlabs.cloud",
+            "port": 26257,
+            "driver": "CockroachDB",
+            "username": "gaasre",
+            "database": "atsplatform",
+            "name": "ATS",
+            "password": "YD9f1n98BIJ00b0sIFA-IQ"
+        }
+    ]
+}
