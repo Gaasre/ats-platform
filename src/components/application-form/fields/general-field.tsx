@@ -142,10 +142,12 @@ export default function GeneralField({ field, jobId }: Props) {
       })
     );
 
+    console.log(fields);
+
     setCustomFields(fields);
-    setInternalValue(initialInternalValue);
   }
 
+  //TODO:Need to update on server
   function goUp(): void {
     // Find the index of the current field in customFields
     const currentIndex = customFields.findIndex((f) => f.id === field.id);
@@ -184,6 +186,7 @@ export default function GeneralField({ field, jobId }: Props) {
     );
   }
 
+  //TODO:Need to update on server
   function goDown(): void {
     // Find the index of the current field in customFields
     const currentIndex = customFields.findIndex((f) => f.id === field.id);

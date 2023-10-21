@@ -19,6 +19,24 @@ type Props = {
   onUpdateValue: (val: GridFieldType) => void;
 };
 
+async function addField(
+  jobId: string,
+  valueType: ValueType,
+  parentGridId: string
+): Promise<CustomFieldType> {
+  const response = await fetch(`/api/jobs/${jobId}/form`, {
+    method: "POST",
+    body: JSON.stringify({
+      valueType,
+      value: {
+        parentGridId
+      }
+    }),
+  });
+  const data = await response.json();
+  return data;
+}
+
 export default function GridField({ field, value, onUpdateValue }: Props) {
   const [customFields, setCustomFields] = useRecoilState(customFieldsState);
 
@@ -193,7 +211,7 @@ export default function GridField({ field, value, onUpdateValue }: Props) {
     );
   }
 
-  function newField(): void {
+  async function newField() {
     const newField: CustomFieldType = {
       id: uuidv4(),
       valueType: ValueType.FORM,
@@ -202,6 +220,8 @@ export default function GridField({ field, value, onUpdateValue }: Props) {
       },
       isEditing: false,
     };
+
+    const newField2 = await addField(field.id, ValueType.FORM, field.id)
 
     setCustomFields(
       customFields.map((f) => {

@@ -48,10 +48,10 @@ export default function ApplicationForm({ jobId }: { jobId: string }) {
     setFields([...fields, { ...data, isEditing: false }]);
   }
 
-  async function newGridField() {
-    const data = await newField(jobId, ValueType.GRID);
-    setFields([...fields, { ...data, isEditing: false }]);
-  }
+  // async function newGridField() {
+  //   const data = await newField(jobId, ValueType.GRID);
+  //   setFields([...fields, { ...data, isEditing: false }]);
+  // }
 
   async function newFormField() {
     const data = await newField(jobId, ValueType.FORM);
@@ -90,13 +90,13 @@ export default function ApplicationForm({ jobId }: { jobId: string }) {
           <h3 className="text-lg font-medium">General Fields</h3>
           <Divider className="my-2"></Divider>
           <div className="p-4 grid grid-cols-2 gap-2 h-fit">
-            <Button
+            {/* <Button
               variant="flat"
               onClick={newGridField}
               startContent={<Columns size={16} />}
             >
               Group Field
-            </Button>
+            </Button> */}
             <Button
               variant="flat"
               onClick={newTitleField}
