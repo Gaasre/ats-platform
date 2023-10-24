@@ -9,6 +9,7 @@ import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { jobsState } from "@/state/application-form-state";
 import { Spinner } from "@nextui-org/spinner";
+import moment from "moment";
 
 async function getJobs(): Promise<Job[] & { error?: string }> {
   const req = await fetch(`http://localhost:3000/api/jobs`, {
@@ -29,11 +30,15 @@ async function newJob() {
   return res;
 }
 
+const isExpired = (job: Job) =>
+  moment(job.applicationDeadline).isBefore(moment());
+
 export default function JobsPage() {
   const [jobs, setJobs] = useRecoilState(jobsState);
   const [loading, setLoading] = useState(true);
   const [loadingNew, setLoadingNew] = useState(false);
   const router = useRouter();
+
   const createJob = async () => {
     setLoadingNew(true);
     const job = await newJob();
@@ -73,14 +78,25 @@ export default function JobsPage() {
             {loading ? (
               <Spinner size="sm" />
             ) : (
-              <JobTable jobs={jobs.filter((job) => job.active)} />
+              <JobTable
+                jobs={jobs.filter((job) => job.active && !isExpired(job))}
+              />
             )}
           </Tab>
           <Tab key="inactive" title="Inactive">
             {loading ? (
               <Spinner size="sm" />
             ) : (
-              <JobTable jobs={jobs.filter((job) => !job.active)} />
+              <JobTable
+                jobs={jobs.filter((job) => !job.active && !isExpired(job))}
+              />
+            )}
+          </Tab>
+          <Tab key="expired" title="Expired">
+            {loading ? (
+              <Spinner size="sm" />
+            ) : (
+              <JobTable jobs={jobs.filter((job) => isExpired(job))} />
             )}
           </Tab>
         </Tabs>

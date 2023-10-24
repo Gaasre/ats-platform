@@ -18,10 +18,15 @@ type Props = {
   jobs: Job[];
 };
 
+const isExpired = (job: Job) => moment(job.applicationDeadline).isBefore(moment())
+
 export default function JobTable({ jobs }: Props) {
   return (
     <div className="flex flex-col gap-3">
-      <Table color="default" aria-label="active job list">
+      <Table
+        color="default"
+        aria-label="active job list"
+      >
         <TableHeader>
           <TableColumn>Position</TableColumn>
           <TableColumn>Location</TableColumn>
@@ -66,13 +71,14 @@ export default function JobTable({ jobs }: Props) {
                   <Tooltip content="Edit">
                     <Link
                       isBlock
+                      isDisabled={isExpired(job)}
                       href={`/dashboard/jobs/edit/${job.id}`}
                       className="text-lg text-default-400 cursor-pointer active:opacity-50"
                     >
                       <Pencil size={14} />
                     </Link>
                   </Tooltip>
-                  <JobActiveSwitch id={job.id} active={!job.active} />
+                  <JobActiveSwitch isDisabled={isExpired(job)} id={job.id} active={!job.active} />
                   <JobDeleteButton id={job.id} />
                 </div>
               </TableCell>

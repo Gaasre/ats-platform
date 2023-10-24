@@ -11,6 +11,7 @@ import { useRecoilState } from "recoil";
 type Props = {
   id: string;
   active: boolean;
+  isDisabled: boolean;
 };
 
 async function changeStatus(
@@ -37,7 +38,7 @@ async function getJobs(): Promise<Job[] & { error?: string }> {
   return res;
 }
 
-export default function JobActiveSwitch({ id, active }: Props) {
+export default function JobActiveSwitch({ id, active, isDisabled }: Props) {
   const [jobs, setJobs] = useRecoilState(jobsState);
   const [loading, setLoading] = useState(false);
   const toogleActive = async () => {
@@ -55,6 +56,7 @@ export default function JobActiveSwitch({ id, active }: Props) {
         <Spinner size="sm" />
       ) : (
         <Link
+          isDisabled={isDisabled}
           className="text-lg text-default-400 cursor-pointer active:opacity-50"
           onClick={toogleActive}
           color="primary"
