@@ -86,6 +86,7 @@ model Job {
   company             Company       @relation(fields: [companyId], references: [id])
   companyId           String
   stages              Stage[]
+  candidates          Candidate[]
   active              Boolean       @default(false)
   CustomField         CustomField[]
 }
@@ -96,7 +97,7 @@ model Stage {
   color      String
   order      Int
   // Relationships
-  job        Job         @relation(fields: [jobId], references: [id])
+  job        Job         @relation(fields: [jobId], references: [id], onDelete: Cascade)
   jobId      String
   candidates Candidate[]
 }
@@ -163,7 +164,7 @@ model CustomField {
   gridField         GridField?      @relation(name: "gridField")
   parentGridField   GridField?      @relation(name: "parentGridField", fields: [parentGridFieldId], references: [customFieldId])
   parentGridFieldId String?
-  job               Job             @relation(fields: [jobId], references: [id])
+  job               Job             @relation(fields: [jobId], references: [id], onDelete: Cascade)
   jobId             String
 }
 
@@ -190,4 +191,6 @@ model Candidate {
   // Relationships
   stage     Stage  @relation(fields: [stageId], references: [id])
   stageId   String
+  Job       Job    @relation(fields: [jobId], references: [id])
+  jobId     String
 }

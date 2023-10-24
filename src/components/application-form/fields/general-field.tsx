@@ -29,7 +29,6 @@ async function deleteRequest(jobId: string, fieldId: string) {
   const response = await fetch(`/api/jobs/${jobId}/form/${fieldId}`, {
     method: "DELETE",
   });
-  console.log(response);
   const data = await response.json();
   return data;
 }
@@ -141,8 +140,6 @@ export default function GeneralField({ field, jobId }: Props) {
         return f;
       })
     );
-
-    console.log(fields);
 
     setCustomFields(fields);
   }

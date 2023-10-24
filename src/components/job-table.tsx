@@ -8,9 +8,11 @@ import {
   TableRow,
   TableCell,
 } from "@nextui-org/table";
-import { Eye, Trash, Trash2 } from "lucide-react";
+import { Eye, Pencil } from "lucide-react";
 import moment from "moment";
 import { Link } from "@nextui-org/link";
+import JobActiveSwitch from "./job-active-switch";
+import JobDeleteButton from "./job-delete-button";
 
 type Props = {
   jobs: Job[];
@@ -26,16 +28,16 @@ export default function JobTable({ jobs }: Props) {
           <TableColumn>Work Type</TableColumn>
           <TableColumn>Published</TableColumn>
           <TableColumn>Candidates</TableColumn>
-          <TableColumn>Actions</TableColumn>
+          <TableColumn align="end">Actions</TableColumn>
         </TableHeader>
         <TableBody items={jobs}>
           {(job) => (
             <TableRow key={job.id}>
               <TableCell>
                 <div>
-                  <div>{job.position}</div>
+                  <div>{job.title}</div>
                   <div className="text-xs text-foreground-400">
-                    {job.seniority}
+                    {job.experienceLevel}
                   </div>
                 </div>
               </TableCell>
@@ -47,18 +49,32 @@ export default function JobTable({ jobs }: Props) {
                   </div>
                 </div>
               </TableCell>
-              <TableCell>{job.type}</TableCell>
-              <TableCell>{moment(job.createdAt).fromNow()}</TableCell>
-              <TableCell>{job.candidates}</TableCell>
-              <TableCell>
-                <Tooltip content="Details">
-                  <Link
-                    href={`/dashboard/jobs/${job.id}`}
-                    className="text-lg text-default-400 cursor-pointer active:opacity-50"
-                  >
-                    <Eye />
-                  </Link>
-                </Tooltip>
+              <TableCell>{job.jobType}</TableCell>
+              <TableCell>{moment(job.postedAt).fromNow()}</TableCell>
+              <TableCell>{job._count?.candidates}</TableCell>
+              <TableCell className="w-[100px]">
+                <div className="flex items-center">
+                  <Tooltip content="Details">
+                    <Link
+                      isBlock
+                      href={`/dashboard/jobs/${job.id}`}
+                      className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                    >
+                      <Eye size={14} />
+                    </Link>
+                  </Tooltip>
+                  <Tooltip content="Edit">
+                    <Link
+                      isBlock
+                      href={`/dashboard/jobs/edit/${job.id}`}
+                      className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                    >
+                      <Pencil size={14} />
+                    </Link>
+                  </Tooltip>
+                  <JobActiveSwitch id={job.id} active={!job.active} />
+                  <JobDeleteButton id={job.id} />
+                </div>
               </TableCell>
             </TableRow>
           )}

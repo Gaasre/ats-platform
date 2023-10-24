@@ -9,11 +9,15 @@ import ApplicationForm from "@/components/application-form";
 import HiringPipeline from "@/components/hiring-pipeline";
 import { useRecoilState } from "recoil";
 import { jobDetailsState } from "@/state/application-form-state";
-import { Job } from "@prisma/client";
 import Stepper from "@/components/stepper";
 import { useRouter } from "next/navigation";
+import { AlertCircle, Ban } from "lucide-react";
+import { Job } from "@/interfaces/job";
 
-async function updateDetails(id: string, details: Job) {
+async function updateDetails(
+  id: string,
+  details: Job
+): Promise<Job & { status?: string; message?: string }> {
   const req = await fetch(`/api/jobs/${id}/details`, {
     method: "PUT",
     body: JSON.stringify(details),
@@ -35,6 +39,7 @@ function StepComponent({ step, jobId }: { step: number; jobId: string }) {
 
 export default function Steps({ id, job }: { id: string; job: Job }) {
   const [step, setStep] = useState(0);
+  const [error, setError] = useState("");
   const [jobDetails, setJobDetails] = useRecoilState(jobDetailsState);
   const { push } = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -45,10 +50,13 @@ export default function Steps({ id, job }: { id: string; job: Job }) {
 
   const saveExit = async () => {
     setIsLoading(true);
-    await updateDetails(id, jobDetails);
-    //TODO: update the application form
+    const data = await updateDetails(id, jobDetails);
+    if (data.status != "error") {
+      push("/dashboard/jobs");
+    } else {
+      if (data.message) setError(data.message);
+    }
     setIsLoading(false);
-    push("/dashboard/jobs");
   };
 
   const nextStep = () => {
@@ -82,6 +90,14 @@ export default function Steps({ id, job }: { id: string; job: Job }) {
       </div>
       <Card>
         <CardBody>
+          {error ? (
+            <div className="text-danger bg-danger-50 py-2 px-4 rounded-md text-sm flex items-center gap-2">
+              <AlertCircle size={14} />
+              <p>{error}</p>
+            </div>
+          ) : (
+            ""
+          )}
           <div className="flex">
             <div className="w-[250px]">
               <Stepper onStepChange={setStep} step={step}></Stepper>

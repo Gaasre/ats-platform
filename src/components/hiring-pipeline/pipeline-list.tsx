@@ -73,7 +73,6 @@ export default function PipelineList(props: Props) {
       }}
       setIsEditing={(isEditing) => {
         const newPipeline = [...stages];
-        console.log(newPipeline, index);
         newPipeline[index] = { ...newPipeline[index], isEditing };
         setStages(newPipeline);
       }}

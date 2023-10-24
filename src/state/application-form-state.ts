@@ -1,9 +1,15 @@
 import { CustomFieldType } from "@/interfaces/form";
-import { Job, Stage } from "@prisma/client";
+import { Job } from "@/interfaces/job";
+import { Stage } from "@prisma/client";
 import { atom } from "recoil";
 
 export const customFieldsState = atom<CustomFieldType[]>({
   key: "customFieldsState",
+  default: [],
+});
+
+export const jobsState = atom<Job[]>({
+  key: "jobsState",
   default: [],
 });
 
@@ -15,7 +21,7 @@ export const jobDetailsState = atom<Job>({
     description: "",
     country: "",
     city: "",
-    applicationDeadline: new Date(),
+    applicationDeadline: "",
     employmentType: "Full-time",
     salary: 0,
     currency: "EUR",
@@ -28,7 +34,7 @@ export const jobDetailsState = atom<Job>({
     companyId: "",
     active: false,
     industry: "",
-    postedAt: new Date(),
+    postedAt: "",
     skillsRequired: [],
   },
 });

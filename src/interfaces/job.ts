@@ -1,11 +1,25 @@
 export interface Job {
-    id: number
-    position: string
-    seniority: string
-    createdAt: Date
-    candidates: number
-    type: string
-    country: string
-    city: string
-    status: string
+  id: string;
+  title: string;
+  description: string;
+  country: string;
+  city: string;
+  postedAt: string;
+  applicationDeadline: string;
+  employmentType: string;
+  salary: number;
+  currency: string;
+  requirements: string;
+  responsibilities: string;
+  experienceLevel: string;
+  industry: string;
+  jobType: string;
+  skillsRequired: Array<string>;
+  benefits: string;
+  quota: number;
+  companyId: string;
+  active: boolean;
+  _count?: {
+    candidates: number;
+  };
 }

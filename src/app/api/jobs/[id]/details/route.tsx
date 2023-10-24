@@ -78,7 +78,7 @@ export async function PUT(
       return new NextResponse(
         JSON.stringify({
           status: "error",
-          message: parsed.error.errors[0].message,
+          message: `${parsed.error.errors[0].message} in ${parsed.error.errors[0].path}`,
         }),
         { status: 403 }
       );

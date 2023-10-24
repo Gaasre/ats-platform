@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import Steps from "./steps";
-import { Job } from "@prisma/client";
 import { headers } from "next/headers";
+import { Job } from "@/interfaces/job";
 
 async function getJobDetails(id: string): Promise<Job & { error?: string }> {
   const req = await fetch(`http://localhost:3000/api/jobs/${id}/details`, {

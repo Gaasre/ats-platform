@@ -122,16 +122,18 @@ export default function EditJobDetails() {
               placeholder="Deadline"
               labelPlacement="outside"
               value={
-                new Date(jobDetails.applicationDeadline ?? new Date())
-                  .toISOString()
-                  .split("T")[0]
+                jobDetails.applicationDeadline
+                  ? new Date(jobDetails.applicationDeadline)
+                      .toISOString()
+                      .split("T")[0]
+                  : ""
               }
-              onChange={(e) =>
+              onChange={(e) => {
                 setJobDetails({
                   ...jobDetails,
-                  applicationDeadline: new Date(e.target.value),
-                })
-              }
+                  applicationDeadline: new Date(e.target.value).toISOString(),
+                });
+              }}
             />
           </div>
           <div className="flex gap-4 mb-6">
