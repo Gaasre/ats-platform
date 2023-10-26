@@ -1,3 +1,5 @@
+import { Company } from "@prisma/client";
+
 export interface Job {
   id: string;
   title: string;
@@ -19,6 +21,7 @@ export interface Job {
   quota: number;
   companyId: string;
   active: boolean;
+  company?: Company;
   _count?: {
     candidates: number;
   };

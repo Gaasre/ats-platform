@@ -40,6 +40,9 @@ export async function GET(
       where: {
         id: params.id,
       },
+      include: {
+        company: true,
+      },
     });
 
     return new NextResponse(JSON.stringify(job), {
