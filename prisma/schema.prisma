@@ -88,7 +88,7 @@ model Job {
   stages              Stage[]
   candidates          Candidate[]
   active              Boolean       @default(false)
-  CustomField         CustomField[]
+  form                CustomField[]
 }
 
 model Stage {

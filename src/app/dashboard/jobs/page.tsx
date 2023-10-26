@@ -2,7 +2,7 @@
 
 import { Tabs, Tab } from "@nextui-org/tabs";
 import { Job } from "@/interfaces/job";
-import JobTable from "@/components/job-table";
+import JobTable from "@/components/job/job-table";
 import { Button } from "@nextui-org/button";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

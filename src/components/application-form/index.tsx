@@ -2,12 +2,22 @@ import GeneralField from "./fields/general-field";
 import { useRecoilState } from "recoil";
 import { customFieldsState } from "@/state/application-form-state";
 import { Button } from "@nextui-org/button";
-import { Columns, FormInput, Heading2, LayoutList, Type } from "lucide-react";
+import {
+  Columns,
+  FormInput,
+  Heading2,
+  LayoutList,
+  Paperclip,
+  PlusCircle,
+  Type,
+  Upload,
+} from "lucide-react";
 import { Divider } from "@nextui-org/divider";
 import { Orientation, ValueType } from "@prisma/client";
 import { CustomFieldType } from "@/interfaces/form";
 import { useEffect, useState } from "react";
 import { Spinner } from "@nextui-org/spinner";
+import { Input } from "@nextui-org/input";
 
 async function newField(
   jobId: string,
@@ -78,11 +88,51 @@ export default function ApplicationForm({ jobId }: { jobId: string }) {
       <h1 className="text-xl mb-8">Customize Application Form</h1>
       <div className="flex gap-4">
         <div className="flex gap-1 flex-col flex-1">
+          {/* This is the default form that you can't edit */}
+          <div className="grid grid-cols-2 gap-8 px-6 mb-8">
+            <Input
+              type="text"
+              label="First Name"
+              labelPlacement="outside"
+              placeholder="First Name"
+            />
+            <Input
+              type="text"
+              label="Last Name"
+              labelPlacement="outside"
+              placeholder="Last Name"
+            />
+            <Input
+              type="email"
+              label="Email"
+              labelPlacement="outside"
+              placeholder="Email"
+            />
+            <Input
+              type="tel"
+              label="Phone Number"
+              labelPlacement="outside"
+              placeholder="Phone Number"
+            />
+            <label htmlFor="resume">
+              <span className="block text-small font-medium text-foreground pb-1.5">
+                Résume
+              </span>
+              <input type="file" id="resume" className="hidden" />
+              <div className="w-full cursor-pointer text-small gap-2 text-foreground-500 flex items-center bg-default-100 hover:bg-default-200 px-3 shadow-sm min-h-unit-10 rounded-medium transition-background duration-150">
+                <Upload size={14} /> Attach File
+              </div>
+            </label>
+          </div>
           {isLoading ? (
-            <Spinner label="Loading" color="primary" labelColor="primary" />
+            <Spinner label="Loading the custom fields" color="primary" labelColor="primary" />
           ) : (
             fields.map((field) => (
-              <GeneralField jobId={jobId} field={field} key={field.id}></GeneralField>
+              <GeneralField
+                jobId={jobId}
+                field={field}
+                key={field.id}
+              ></GeneralField>
             ))
           )}
         </div>

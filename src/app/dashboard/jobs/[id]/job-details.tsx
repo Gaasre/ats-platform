@@ -1,31 +1,19 @@
 import { Job } from "@/interfaces/job";
 import { Card, CardHeader, CardBody } from "@nextui-org/card";
 import { Divider } from "@nextui-org/divider";
+import { Button } from "@nextui-org/button";
 import { User } from "@nextui-org/user";
 import moment from "moment";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
 
-async function getJobDetails(id: string): Promise<Job & { error?: string }> {
-  const req = await fetch(`http://localhost:3000/api/jobs/${id}/details`, {
-    method: "GET",
-    headers: headers(),
-  });
+import dynamic from "next/dynamic";
+import { Link } from "@nextui-org/link";
+import { ChevronLeft } from "lucide-react";
 
-  const res = await req.json();
-  return res;
-}
+const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
 
-export default async function DetailsPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const job = await getJobDetails(params.id);
-  if (!job || job.error) {
-    redirect("/dashboard/jobs");
-  } else {
-    return (
+export default function JobDetails({ job }: { job: Job }) {
+  return (
+    <div>
       <div className="flex gap-4">
         <div className="w-3/4 h-full">
           <Card>
@@ -35,24 +23,7 @@ export default async function DetailsPage({
             <Divider />
             <CardBody>
               <div className="text-sm px-4 pt-4 pb-8">
-                <p>{job.description}</p>
-                <h2 className="text-xl font-semibold mb-4 mt-8">
-                  Responsibilities
-                </h2>
-                <p>{job.responsibilities}</p>
-                <h2 className="text-xl font-semibold mb-4 mt-8">
-                  Requirements
-                </h2>
-                <p>{job.requirements}</p>
-                <h2 className="text-xl font-semibold mb-4 mt-8">Benefits</h2>
-                <p>{job.benefits}</p>
-                <p className="mt-10">
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Libero eaque laborum quasi hic doloremque, blanditiis earum
-                  quae consectetur quaerat numquam aspernatur eveniet
-                  repudiandae expedita quis sunt voluptas nesciunt eius
-                  cupiditate.
-                </p>
+                <Editor isEditor={false} initialContent={job.description} />
               </div>
             </CardBody>
           </Card>
@@ -133,6 +104,6 @@ export default async function DetailsPage({
           </Card>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }

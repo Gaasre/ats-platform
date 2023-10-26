@@ -4,7 +4,7 @@ import { Button } from "@nextui-org/button";
 import { Link } from "@nextui-org/link";
 import { Card, CardBody } from "@nextui-org/card";
 import React, { useEffect, useState } from "react";
-import EditJobDetails from "@/components/edit-job-details";
+import EditJobDetails from "@/components/job/edit-job-details";
 import ApplicationForm from "@/components/application-form";
 import HiringPipeline from "@/components/hiring-pipeline";
 import { useRecoilState } from "recoil";

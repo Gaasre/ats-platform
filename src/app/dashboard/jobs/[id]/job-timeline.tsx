@@ -3,7 +3,7 @@ import Timeline from "@/components/timeline";
 import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import { ScrollShadow } from "@nextui-org/scroll-shadow";
 
-export default function TimelinePage() {
+export default function JobTimeline() {
   return (
     <div className="flex gap-4">
       <div className="h-full w-1/2">

@@ -1,50 +1,40 @@
 "use client";
 
+import Board from "@/components/board";
 import { Badge } from "@nextui-org/badge";
 import { Tab, Tabs } from "@nextui-org/tabs";
-import { useRouter, usePathname } from "next/navigation";
+import JobTimeline from "./job-timeline";
+import { Job } from "@/interfaces/job";
+import JobDetails from "./job-details";
 
-type Props = {
-  id: string;
-};
-
-export default function JobTabs({ id }: Props) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const page = `/dashboard/jobs/${id}/`;
-
-  const changeTab = (key: string) => {
-    if (key == "candidates") {
-      router.push(page);
-    } else {
-      router.push(page + key);
-    }
-  };
-
-  const selectedTab = () => {
-    const currentPage = pathname.split("/").pop();
-    if (currentPage == "details" || currentPage == "timeline") {
-      return currentPage;
-    } else {
-      return "candidates";
-    }
-  };
-
+export default function JobTabs({ job }: { job: Job }) {
   return (
-    <div className="mb-6">
-      <Tabs
-        selectedKey={selectedTab()}
-        onSelectionChange={(key) => changeTab(key.toString())}
-        aria-label="Job Tabs"
-      >
-        <Tab key="candidates" title={
+    <Tabs aria-label="Job Tabs">
+      <Tab
+        key="candidates"
+        title={
           <Badge content="5" color="danger">
             <span className="mr-3">Candidates</span>
           </Badge>
-        }></Tab>
-        <Tab key="details" title="Job Details"></Tab>
-        <Tab key="timeline" title="Timeline & Notes"></Tab>
-      </Tabs>
-    </div>
+        }
+      >
+        <div>
+          <Board></Board>
+        </div>
+      </Tab>
+      <Tab key="details" title="Job Details">
+        <JobDetails job={job}></JobDetails>
+      </Tab>
+      <Tab
+        key="timeline"
+        title={
+          <Badge content="TODO" color="warning">
+            <span className="mr-3">Timeline & Notes</span>
+          </Badge>
+        }
+      >
+        <JobTimeline></JobTimeline>
+      </Tab>
+    </Tabs>
   );
 }

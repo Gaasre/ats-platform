@@ -1,3 +1,5 @@
+"use client";
+
 import { Input, Textarea } from "@nextui-org/input";
 import { Divider } from "@nextui-org/divider";
 import React from "react";
@@ -6,74 +8,30 @@ import { Avatar } from "@nextui-org/avatar";
 import { useRecoilState } from "recoil";
 import { jobDetailsState } from "@/state/application-form-state";
 import { Spinner } from "@nextui-org/spinner";
+import dynamic from "next/dynamic";
+
+const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
 
 export default function EditJobDetails() {
   const [jobDetails, setJobDetails] = useRecoilState(jobDetailsState);
 
   return (
-    <div className="p-4 w-3/4">
+    <div className="p-4 w-full">
       <h1 className="text-xl mb-8">Add Job details</h1>
       {jobDetails.id != "" ? (
-        <div>
-          <h2 className="text-lg mb-4">Content</h2>
-          <Input
-            type="text"
-            label="Job title"
-            placeholder="Enter the job title"
-            labelPlacement="outside"
-            className="mb-4"
-            value={jobDetails.title}
-            onValueChange={(value) => {
-              setJobDetails({ ...jobDetails, title: value });
-            }}
-          />
-          <Textarea
-            label="Job Description"
-            labelPlacement="outside"
-            placeholder="Enter the job description"
-            cols={8}
-            className="mb-4"
-            value={jobDetails.description}
-            onValueChange={(value) => {
-              setJobDetails({ ...jobDetails, description: value });
-            }}
-          />
-          <Textarea
-            label="Job Responsibilities"
-            labelPlacement="outside"
-            placeholder="Enter the job responsibilities"
-            cols={8}
-            className="mb-4"
-            value={jobDetails.responsibilities}
-            onValueChange={(value) => {
-              setJobDetails({ ...jobDetails, responsibilities: value });
-            }}
-          />
-          <Textarea
-            label="Job Requirements"
-            labelPlacement="outside"
-            placeholder="Enter the job requirements"
-            cols={8}
-            className="mb-4"
-            value={jobDetails.requirements}
-            onValueChange={(value) =>
-              setJobDetails({ ...jobDetails, requirements: value })
-            }
-          />
-          <Textarea
-            label="Job Benefits"
-            labelPlacement="outside"
-            placeholder="Enter the job benefits"
-            cols={8}
-            className="mb-4"
-            value={jobDetails.benefits || ""}
-            onValueChange={(value) =>
-              setJobDetails({ ...jobDetails, benefits: value })
-            }
-          />
-          <Divider className="my-6"></Divider>
-          <h2 className="text-lg mb-4">Location</h2>
-          <div className="flex gap-4">
+        <div className="grid grid-cols-3 gap-4">
+          <div className="col-span-2 w-full">
+            <h2 className="text-xl mb-4 font-semibold">Job Description</h2>
+            <Editor
+              isEditor={true}
+              initialContent={jobDetails.description}
+              onChange={(value) =>
+                setJobDetails({ ...jobDetails, description: value })
+              }
+            />
+          </div>
+          <div className="space-y-4 p-8 rounded-md shadow-xl">
+            <h2 className="text-xl mb-4 font-semibold">Location</h2>
             <Input
               type="text"
               label="Country"
@@ -94,10 +52,8 @@ export default function EditJobDetails() {
                 setJobDetails({ ...jobDetails, city: value })
               }
             />
-          </div>
-          <Divider className="my-6"></Divider>
-          <h2 className="text-lg mb-4">Other Details</h2>
-          <div className="flex gap-4 mb-6">
+            <Divider className="my-6"></Divider>
+            <h2 className="text-xl mb-4 font-semibold">Other Details</h2>
             <Select
               label="Contact Person"
               placeholder="Contact Person"
@@ -135,8 +91,6 @@ export default function EditJobDetails() {
                 });
               }}
             />
-          </div>
-          <div className="flex gap-4 mb-6">
             <Select
               label="Employment Type"
               placeholder="Employment Type"
@@ -165,8 +119,6 @@ export default function EditJobDetails() {
               <SelectItem key="Mid-level">Mid-level</SelectItem>
               <SelectItem key="Senior">Senior</SelectItem>
             </Select>
-          </div>
-          <div className="flex gap-4 mb-6">
             <Input
               label="Expected Salary"
               placeholder="0.00"
@@ -213,8 +165,6 @@ export default function EditJobDetails() {
                 setJobDetails({ ...jobDetails, quota: parseInt(value) })
               }
             />
-          </div>
-          <div className="flex gap-4 mb-6">
             <Select
               label="Job Type"
               placeholder="Job Type"
