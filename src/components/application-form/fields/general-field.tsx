@@ -11,6 +11,7 @@ import DropdownField from "./dropdown-field";
 import {
   CustomFieldType,
   DropdownFieldType,
+  FileFieldType,
   FormFieldType,
   GridFieldType,
   ParagraphFieldType,
@@ -19,6 +20,7 @@ import {
 } from "@/interfaces/form";
 import { RadioField, ValueType } from "@prisma/client";
 import { omit } from "lodash";
+import FileField from "./file-field";
 
 type Props = {
   field: CustomFieldType;
@@ -52,6 +54,7 @@ export default function GeneralField({ field, jobId }: Props) {
       | TitleFieldType
       | DropdownFieldType
       | RadioFieldType
+      | FileFieldType
       | GridFieldType
       | undefined
   ) {
@@ -144,7 +147,6 @@ export default function GeneralField({ field, jobId }: Props) {
     setCustomFields(fields);
   }
 
-  //TODO:Need to update on server
   function goUp(): void {
     // Find the index of the current field in customFields
     const currentIndex = customFields.findIndex((f) => f.id === field.id);
@@ -183,7 +185,6 @@ export default function GeneralField({ field, jobId }: Props) {
     );
   }
 
-  //TODO:Need to update on server
   function goDown(): void {
     // Find the index of the current field in customFields
     const currentIndex = customFields.findIndex((f) => f.id === field.id);
@@ -223,6 +224,8 @@ export default function GeneralField({ field, jobId }: Props) {
       return field.titleField;
     } else if (field.valueType === ValueType.FORM) {
       return field.formField;
+    } else if (field.valueType === ValueType.FILE) {
+      return field.fileField;
     } else if (field.valueType === ValueType.RADIO) {
       return field.radioField;
     } else if (field.valueType === ValueType.DROPDOWN) {
@@ -234,6 +237,7 @@ export default function GeneralField({ field, jobId }: Props) {
 
   const [internalValue, setInternalValue] = useState<
     | FormFieldType
+    | FileFieldType
     | ParagraphFieldType
     | TitleFieldType
     | DropdownFieldType
@@ -267,6 +271,12 @@ export default function GeneralField({ field, jobId }: Props) {
           value={internalValue as FormFieldType}
           onUpdateValue={setInternalValue}
         ></FormField>
+      ) : field.valueType == ValueType.FILE ? (
+        <FileField
+          field={field}
+          value={internalValue as FileFieldType}
+          onUpdateValue={setInternalValue}
+        ></FileField>
       ) : field.valueType == ValueType.GRID ? (
         <GridField
           field={field}

@@ -12,11 +12,8 @@ const jobSchema = z.object({
   employmentType: z.enum(["Full-time", "Part-time"]),
   salary: z.number(),
   currency: z.enum(["EUR", "USD"]),
-  requirements: z.string(),
-  responsibilities: z.string(),
   experienceLevel: z.enum(["Entry-level", "Mid-level", "Senior"]),
   jobType: z.enum(["On-site", "Remote", "Hybrid"]),
-  benefits: z.string(),
   quota: z.number(),
   companyId: z.string(),
 });

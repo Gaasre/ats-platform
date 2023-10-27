@@ -11,6 +11,7 @@ const fieldSchema = z.object({
     "DROPDOWN",
     "GRID",
     "FORM",
+    "FILE",
   ]),
 });
 
@@ -48,6 +49,7 @@ export async function GET(
           },
         },
         formField: true,
+        fileField: true,
       },
     });
 
@@ -151,6 +153,14 @@ export async function POST(
           },
         });
         break;
+      case "FILE":
+        await prisma.fileField.create({
+          data: {
+            customFieldId: customField.id,
+            label: "File",
+          },
+        });
+        break;
       default:
         return new NextResponse(
           JSON.stringify({
@@ -176,6 +186,7 @@ export async function POST(
           },
         },
         formField: true,
+        fileField: true,
       },
     });
 

@@ -25,7 +25,9 @@ export default async function DashboardLayout({
         <div className="border-r border-foreground-200 h-[calc(100vh-65px)]">
           <LeftMenu></LeftMenu>
         </div>
-        <div className="grow p-8 bg-gray-50 overflow-y-auto h-[calc(100vh-65px)]">{children}</div>
+        <div className="grow p-8 bg-gray-50 overflow-y-auto h-[calc(100vh-65px)]">
+          {children}
+        </div>
       </div>
     </main>
   );

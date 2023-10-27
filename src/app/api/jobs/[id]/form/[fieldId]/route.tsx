@@ -11,6 +11,7 @@ const fieldSchema = z.object({
     "DROPDOWN",
     "GRID",
     "FORM",
+    "FILE",
   ]),
   value: z.any(),
 });
@@ -112,6 +113,14 @@ export async function PUT(
         });
         break;
       case "FORM":
+        await prisma.formField.update({
+          where: {
+            customFieldId: fieldId,
+          },
+          data: parsed.data.value,
+        });
+        break;
+      case "FILE":
         await prisma.formField.update({
           where: {
             customFieldId: fieldId,

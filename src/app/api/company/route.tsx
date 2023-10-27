@@ -19,14 +19,7 @@ export async function POST(request: Request) {
       );
     }
 
-    // Verify if the user is already a company head
-    const user = await prisma.user.findUnique({
-      where: {
-        id: session.user.id,
-      },
-    });
-
-    if (user?.companyId) {
+    if (session.user?.companyId) {
       return new Response(
         JSON.stringify({
           error:

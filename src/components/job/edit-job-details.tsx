@@ -31,6 +31,16 @@ export default function EditJobDetails() {
             />
           </div>
           <div className="space-y-4 p-8 rounded-md shadow-xl">
+            <Input
+              type="text"
+              label="Job Title"
+              placeholder="Title"
+              labelPlacement="outside"
+              value={jobDetails.title}
+              onValueChange={(value) =>
+                setJobDetails({ ...jobDetails, title: value })
+              }
+            />
             <h2 className="text-xl mb-4 font-semibold">Location</h2>
             <Input
               type="text"

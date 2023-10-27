@@ -10,6 +10,11 @@ export type CustomFieldType = {
   radioField?: RadioFieldType;
   dropdownField?: DropdownFieldType;
   gridField?: GridFieldType;
+  fileField?: FileFieldType;
+};
+
+export type FileFieldType = {
+  label: string;
 };
 
 export type FormFieldType = {

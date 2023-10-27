@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  database:
+    container_name: ats-db
+    image: postgres:12.8
+    restart: always
+    environment:
+      - POSTGRES_USER=pg
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=ats
+    ports:
+      - 5430:5432
+    volumes:
+      - db:/var/lib/postgresql/data
+
+volumes:
+  db:

@@ -36,7 +36,7 @@ export async function GET() {
       },
     });
 
-    return new Response(JSON.stringify(jobs), {
+    return new Response(JSON.stringify(jobs ? jobs : []), {
       status: 200,
     });
   } catch (error) {
