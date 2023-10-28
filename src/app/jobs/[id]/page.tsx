@@ -5,10 +5,22 @@ import { Chip } from "@nextui-org/chip";
 import { Divider } from "@nextui-org/divider";
 
 import dynamic from "next/dynamic";
+import JobForm from "./job-form";
+import { CustomFieldType } from "@/interfaces/form";
 const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
 
 async function getJobDetails(id: string): Promise<Job & { error?: string }> {
   const req = await fetch(`http://localhost:3000/api/jobs/${id}/details`, {
+    method: "GET",
+    headers: headers(),
+  });
+
+  const res = await req.json();
+  return res;
+}
+
+async function getJobForm(id: string): Promise<CustomFieldType[]> {
+  const req = await fetch(`http://localhost:3000/api/jobs/${id}/form`, {
     method: "GET",
     headers: headers(),
   });
@@ -37,6 +49,7 @@ export default async function JobPost({
   };
 }) {
   const job = await getJobDetails(params.id);
+  const form = await getJobForm(params.id);
   if (!job || job.error) {
     redirect("/");
   } else {
@@ -70,12 +83,13 @@ export default async function JobPost({
         </div>
         <div className="max-w-screen-xl mx-auto">
           <div className="grid grid-cols-3">
-            <div className="col-span-2 w-full py-10 max-w-xl mx-auto">
+            <div className="col-span-2 w-full py-10 max-w-2xl mx-auto">
               <h2 className="text-3xl font-bold">Job description</h2>
               <Divider className="mt-4 mb-8" />
               <Editor isEditor={false} initialContent={job.description} />
+              <JobForm job={job} form={form}></JobForm>
             </div>
-            <div className="p-8">We will put the form here!</div>
+            <div className="p-8">I will put something here</div>
           </div>
         </div>
       </div>

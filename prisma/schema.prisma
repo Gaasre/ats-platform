@@ -104,16 +104,16 @@ model Stage {
 }
 
 model Company {
-  id      String @id @default(cuid())
+  id      String  @id @default(cuid())
   name    String
   website String
-  head    User   @relation(fields: [headId], references: [id], onDelete: SetNull)
-  headId  String @unique
+  head    User?   @relation(fields: [headId], references: [id], onDelete: SetNull)
+  headId  String? @unique
   // Additional fields for company-related information
   // Example: industry, headquarters location, company size, etc.
   // Relationships
   jobs    Job[] // A company can have multiple job listings
-  user    User[] @relation(name: "employees")
+  user    User[]  @relation(name: "employees")
 }
 
 model TitleField {
@@ -193,14 +193,15 @@ enum Orientation {
 }
 
 model Candidate {
-  id        String @id @default(cuid())
-  firstName String
-  lastName  String
-  email     String
-  phone     String
+  id           String @id @default(cuid())
+  firstName    String
+  lastName     String
+  email        String
+  phone        String
+  customFields Json
   // Relationships
-  stage     Stage  @relation(fields: [stageId], references: [id])
-  stageId   String
-  Job       Job    @relation(fields: [jobId], references: [id])
-  jobId     String
+  stage        Stage  @relation(fields: [stageId], references: [id])
+  stageId      String
+  Job          Job    @relation(fields: [jobId], references: [id])
+  jobId        String
 }
