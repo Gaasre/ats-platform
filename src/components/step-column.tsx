@@ -9,10 +9,12 @@ import { Stage } from "@/interfaces/stage";
 
 type Props = {
   stage: Stage;
+  active: boolean;
 };
 
 export default function StepColumn({
   stage: { candidates, title, id },
+  active,
 }: Props) {
   const { isOver, setNodeRef } = useDroppable({
     id,
@@ -28,7 +30,11 @@ export default function StepColumn({
 
   return (
     <div ref={setNodeRef} className="w-[250px] gap-2 flex flex-col h-full">
-      <Card className="border-t-primary-500 border-t-4">
+      <Card
+        className={`border-t-primary-500 border-t-4 ${
+          isOver ? "scale-110" : ""
+        }`}
+      >
         <CardHeader>
           <div className="flex items-center justify-between w-full text-sm px-2">
             <p className="select-none font-semibold">{title}</p>
