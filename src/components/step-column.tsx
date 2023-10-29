@@ -9,12 +9,10 @@ import { Stage } from "@/interfaces/stage";
 
 type Props = {
   stage: Stage;
-  active: boolean;
 };
 
 export default function StepColumn({
   stage: { candidates, title, id },
-  active,
 }: Props) {
   const { isOver, setNodeRef } = useDroppable({
     id,

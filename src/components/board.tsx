@@ -26,7 +26,6 @@ type Props = {
 export default function Board({ stages, onCandidateMove }: Props) {
   const [droppedId, setDroppedId] = useState<number | null>(null);
   const [activeCandidate, setActiveCandidate] = useState<Candidate | null>();
-  const [activeStage, setActiveStage] = useState("");
   const mouseSensor = useSensor(MouseSensor, {
     // Require the mouse to move by 10 pixels before activating
     activationConstraint: {
@@ -67,11 +66,9 @@ export default function Board({ stages, onCandidateMove }: Props) {
 
     // Dropping an Candidate over a Column
     if (isActiveACandidate && isOverAColumn) {
-      console.log(activeCandidate?.stageId, over.id);
-      if (activeCandidate?.stageId != over.id) {
-        setActiveStage(over.id as string);
+      if (activeCandidate) {
+        onCandidateMove(over.id as string, activeCandidate.id);
       }
-      onCandidateMove(active.id as string, over.id as string);
       // setCandidates((candidates) => {
       //   const activeIndex = candidates.findIndex((a) => a.id == active.id);
       //   candidates[activeIndex].columnId = parseInt(over.id.toString());
@@ -88,11 +85,7 @@ export default function Board({ stages, onCandidateMove }: Props) {
         onDragStart={onDragStart}
       >
         {stages.map((stage) => (
-          <StepColumn
-            stage={stage}
-            key={stage.id}
-            active={activeStage == stage.id}
-          />
+          <StepColumn stage={stage} key={stage.id} />
         ))}
 
         <DragOverlay>

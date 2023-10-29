@@ -6,8 +6,37 @@ import { Tab, Tabs } from "@nextui-org/tabs";
 import JobTimeline from "./job-timeline";
 import { Job } from "@/interfaces/job";
 import JobDetails from "./job-details";
+import { useRouter } from "next/navigation";
 
-export default function JobTabs({ job }: { job: Job }) {
+async function sendChangeStage(stageId: string, candidateId: string) {
+  const req = await fetch(
+    `http://localhost:3000/api/dashboard/candidate/${candidateId}/stage`,
+    {
+      method: "PATCH",
+      body: JSON.stringify({
+        stageId,
+      }),
+    }
+  );
+
+  const res = await req.json();
+  return res;
+}
+
+export default function JobTabs({
+  job,
+  onUpdate,
+}: {
+  job: Job;
+  onUpdate(): void;
+}) {
+  const changeStage = async (stageId: string, candidateId: string) => {
+    const res = await sendChangeStage(stageId, candidateId);
+    if (!res.error) {
+      onUpdate();
+    }
+  };
+
   return (
     <Tabs aria-label="Job Tabs">
       <Tab
@@ -21,9 +50,7 @@ export default function JobTabs({ job }: { job: Job }) {
         <div>
           <Board
             stages={job.stages || []}
-            onCandidateMove={(newStageId, candidateId) =>
-              console.log("done")
-            }
+            onCandidateMove={changeStage}
           ></Board>
         </div>
       </Tab>
