@@ -1,7 +1,3 @@
-import Board from "@/components/board";
-
 export default function CandidatesPage() {
-  return (
-    <Board></Board>
-  )
+  return <div>Nothing here yet</div>;
 }

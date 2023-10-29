@@ -1,4 +1,4 @@
-import { Applicant } from "@/interfaces/applicant";
+import { Candidate } from "@/interfaces/candidate";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Card, CardBody, CardHeader, CardFooter } from "@nextui-org/card";
@@ -7,11 +7,11 @@ import { Divider } from "@nextui-org/divider";
 import { File } from "lucide-react";
 
 type Props = {
-  applicant: Applicant;
+  candidate: Candidate;
   customClass?: string;
 };
 
-export default function ApplicantCard({ applicant, customClass }: Props) {
+export default function CandidateCard({ candidate, customClass }: Props) {
   const {
     attributes,
     listeners,
@@ -20,10 +20,10 @@ export default function ApplicantCard({ applicant, customClass }: Props) {
     transition,
     isDragging,
   } = useSortable({
-    id: applicant.id,
+    id: candidate.id,
     data: {
-      type: "Applicant",
-      applicant,
+      type: "Candidate",
+      candidate,
     },
   });
 
@@ -46,10 +46,10 @@ export default function ApplicantCard({ applicant, customClass }: Props) {
     <Card ref={setNodeRef} style={style} {...listeners} {...attributes}>
       <CardHeader>
         <div className="flex gap-2 items-center">
-          <Avatar name={applicant.firstname} />
+          <Avatar name={candidate.firstName} />
           <div>
             <p className="font-semibold">
-              {applicant.firstname} {applicant.lastname}
+              {candidate.firstName} {candidate.lastName}
             </p>
             <p className="text-xs text-foreground-500">2 days ago</p>
           </div>

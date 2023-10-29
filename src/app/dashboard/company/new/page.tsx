@@ -23,8 +23,6 @@ export default function NewCompanyPage() {
         website,
       })
       .then((response) => {
-        //TODO: Remove later
-        console.log(response.data);
         update();
         router.push("/dashboard");
       })

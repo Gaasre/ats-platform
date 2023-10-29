@@ -11,7 +11,6 @@ export default function FileField({
   field: CustomFieldType;
   onUpdateValue: (val: FileFieldType) => void;
 }) {
-  console.log(field, value);
   if (field.isEditing) {
     return (
       <Input

@@ -6,21 +6,10 @@ import { Divider } from "@nextui-org/divider";
 
 import dynamic from "next/dynamic";
 import JobForm from "./job-form";
-import { CustomFieldType } from "@/interfaces/form";
 const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
 
 async function getJobDetails(id: string): Promise<Job & { error?: string }> {
   const req = await fetch(`http://localhost:3000/api/jobs/${id}/details`, {
-    method: "GET",
-    headers: headers(),
-  });
-
-  const res = await req.json();
-  return res;
-}
-
-async function getJobForm(id: string): Promise<CustomFieldType[]> {
-  const req = await fetch(`http://localhost:3000/api/jobs/${id}/form`, {
     method: "GET",
     headers: headers(),
   });
@@ -49,8 +38,7 @@ export default async function JobPost({
   };
 }) {
   const job = await getJobDetails(params.id);
-  const form = await getJobForm(params.id);
-  if (!job || job.error) {
+  if (!job || job.error || !job.form) {
     redirect("/");
   } else {
     return (
@@ -87,7 +75,7 @@ export default async function JobPost({
               <h2 className="text-3xl font-bold">Job description</h2>
               <Divider className="mt-4 mb-8" />
               <Editor isEditor={false} initialContent={job.description} />
-              <JobForm job={job} form={form}></JobForm>
+              <JobForm job={job} form={job.form}></JobForm>
             </div>
             <div className="p-8">I will put something here</div>
           </div>

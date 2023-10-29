@@ -4,7 +4,7 @@ import { headers } from "next/headers";
 import { Job } from "@/interfaces/job";
 
 async function getJobDetails(id: string): Promise<Job & { error?: string }> {
-  const req = await fetch(`http://localhost:3000/api/jobs/${id}/details`, {
+  const req = await fetch(`http://localhost:3000/api/dashboard/jobs/${id}`, {
     method: "GET",
     headers: headers(),
   });

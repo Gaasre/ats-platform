@@ -1,4 +1,6 @@
 import { Company } from "@prisma/client";
+import { CustomFieldType } from "./form";
+import { Stage } from "./stage";
 
 export interface Job {
   id: string;
@@ -22,6 +24,8 @@ export interface Job {
   companyId: string;
   active: boolean;
   company?: Company;
+  form?: CustomFieldType[];
+  stages?: Stage[];
   _count?: {
     candidates: number;
   };

@@ -56,7 +56,6 @@ export default function CustomForm({ form }: { form: CustomFieldType[] }) {
           <Input
             {...register(customField.id)}
             label={customField.formField?.label}
-            value=""
             labelPlacement="outside"
             placeholder="Value"
             fullWidth

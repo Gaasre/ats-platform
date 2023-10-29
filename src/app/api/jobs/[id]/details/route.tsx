@@ -23,22 +23,32 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session) {
-      return new NextResponse(
-        JSON.stringify({ error: "You must be authenticated to do this." }),
-        {
-          status: 401,
-        }
-      );
-    }
-
     const job = await prisma.job.findUnique({
       where: {
         id: params.id,
       },
-      include: {
+      select: {
+        id: true,
         company: true,
+        form: {
+          include: {
+            titleField: true,
+            paragraphField: true,
+            radioField: true,
+            dropdownField: true,
+            formField: true,
+            fileField: true,
+          },
+        },
+        title: true,
+        country: true,
+        city: true,
+        employmentType: true,
+        jobType: true,
+        experienceLevel: true,
+        salary: true,
+        description: true,
+        currency: true,
       },
     });
 

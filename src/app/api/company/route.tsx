@@ -40,6 +40,15 @@ export async function POST(request: Request) {
       },
     });
 
+    await prisma.user.update({
+      data: {
+        companyId: company.id,
+      },
+      where: {
+        id: session.user.id,
+      },
+    });
+
     return new Response(JSON.stringify(company), {
       status: 201,
     });

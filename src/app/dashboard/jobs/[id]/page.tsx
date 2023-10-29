@@ -6,7 +6,7 @@ import { Link } from "@nextui-org/link";
 import JobTabs from "./job-tabs";
 
 async function getJobDetails(id: string): Promise<Job & { error?: string }> {
-  const req = await fetch(`http://localhost:3000/api/jobs/${id}/details`, {
+  const req = await fetch(`http://localhost:3000/api/dashboard/jobs/${id}`, {
     method: "GET",
     headers: headers(),
   });

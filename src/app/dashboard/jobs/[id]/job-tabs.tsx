@@ -19,7 +19,12 @@ export default function JobTabs({ job }: { job: Job }) {
         }
       >
         <div>
-          <Board></Board>
+          <Board
+            stages={job.stages || []}
+            onCandidateMove={(newStageId, candidateId) =>
+              console.log(newStageId, candidateId)
+            }
+          ></Board>
         </div>
       </Tab>
       <Tab key="details" title="Job Details">

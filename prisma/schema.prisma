@@ -193,15 +193,16 @@ enum Orientation {
 }
 
 model Candidate {
-  id           String @id @default(cuid())
+  id           String   @id @default(cuid())
   firstName    String
   lastName     String
   email        String
   phone        String
+  date         DateTime
   customFields Json
   // Relationships
-  stage        Stage  @relation(fields: [stageId], references: [id])
+  stage        Stage    @relation(fields: [stageId], references: [id])
   stageId      String
-  Job          Job    @relation(fields: [jobId], references: [id])
+  Job          Job      @relation(fields: [jobId], references: [id])
   jobId        String
 }

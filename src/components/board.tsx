@@ -11,15 +11,21 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import ApplicantCard from "./applicant-card";
+import CandidateCard from "./candidate-card";
 import { useState } from "react";
 import StepColumn from "./step-column";
-import { Applicant } from "@/interfaces/applicant";
+import { Candidate } from "@/interfaces/candidate";
 import { arrayMove } from "@dnd-kit/sortable";
+import { Stage } from "@/interfaces/stage";
 
-export default function Board() {
+type Props = {
+  stages: Stage[];
+  onCandidateMove(newStageId: string, candidateId: string): void;
+};
+
+export default function Board({ stages, onCandidateMove }: Props) {
   const [droppedId, setDroppedId] = useState<number | null>(null);
-  const [activeApplicant, setActiveApplicant] = useState<Applicant | null>();
+  const [activeCandidate, setActiveCandidate] = useState<Candidate | null>();
   const mouseSensor = useSensor(MouseSensor, {
     // Require the mouse to move by 10 pixels before activating
     activationConstraint: {
@@ -29,40 +35,9 @@ export default function Board() {
 
   const sensors = useSensors(mouseSensor);
 
-  const [items, setItems] = useState([
-    {
-      id: 10,
-      name: "Applied",
-      length: 20,
-    },
-    { id: 20, name: "Screening", length: 10 },
-    { id: 30, name: "Technical Challenge", length: 2 },
-  ]);
-
-  const [applicants, setApplicants] = useState([
-    {
-      id: 1,
-      firstname: "Julian",
-      lastname: "Hulbert",
-      columnId: 10,
-    },
-    {
-      id: 2,
-      firstname: "Mike",
-      lastname: "Jaders",
-      columnId: 10,
-    },
-    {
-      id: 3,
-      firstname: "Kevin",
-      lastname: "Dukkon",
-      columnId: 10,
-    },
-  ]);
-
   function onDragStart(event: DragStartEvent) {
-    if (event.active.data.current?.type === "Applicant") {
-      setActiveApplicant(event.active.data.current.applicant);
+    if (event.active.data.current?.type === "Candidate") {
+      setActiveCandidate(event.active.data.current.candidate);
     }
   }
 
@@ -72,53 +47,50 @@ export default function Board() {
 
     if (active.id === over.id) return;
 
-    const isActiveAnApplicant = active.data.current?.type === "Applicant";
-    const isOverAnApplicant = over.data.current?.type === "Applicant";
+    const isActiveACandidate = active.data.current?.type === "Candidate";
+    // const isOverACandidate = over.data.current?.type === "Candidate";
 
-    // Dropping an Applicant over another Applicant
-    if (isActiveAnApplicant && isOverAnApplicant) {
-      setApplicants((applicants) => {
-        const activeIndex = applicants.findIndex((a) => a.id == active.id);
-        const overIndex = applicants.findIndex((a) => a.id === over.id);
+    // // Dropping an Candidate over another Candidate
+    // if (isActiveACandidate && isOverACandidate) {
+    //   setCandidates((candidates) => {
+    //     const activeIndex = candidates.findIndex((a) => a.id == active.id);
+    //     const overIndex = candidates.findIndex((a) => a.id === over.id);
 
-        applicants[activeIndex].columnId = applicants[overIndex].columnId;
+    //     candidates[activeIndex].columnId = candidates[overIndex].columnId;
 
-        return arrayMove(applicants, activeIndex, overIndex);
-      });
-    }
+    //     return arrayMove(candidates, activeIndex, overIndex);
+    //   });
+    // }
 
     const isOverAColumn = over.data.current?.type === "Column";
 
-    // Dropping an Applicant over a Column
-    if (isActiveAnApplicant && isOverAColumn) {
-      setApplicants((applicants) => {
-        const activeIndex = applicants.findIndex((a) => a.id == active.id);
-
-        applicants[activeIndex].columnId = parseInt(over.id.toString());
-
-        return arrayMove(applicants, activeIndex, activeIndex);
-      });
+    // Dropping an Candidate over a Column
+    if (isActiveACandidate && isOverAColumn) {
+      onCandidateMove(active.id as string, over.id as string);
+      // setCandidates((candidates) => {
+      //   const activeIndex = candidates.findIndex((a) => a.id == active.id);
+      //   candidates[activeIndex].columnId = parseInt(over.id.toString());
+      //   return arrayMove(candidates, activeIndex, activeIndex);
+      // });
     }
   }
 
   return (
     <div className="flex gap-6 h-full">
-      <DndContext sensors={sensors} onDragOver={onDragOver} onDragStart={onDragStart}>
-        {items.map((step) => (
-          <StepColumn
-            id={step.id}
-            key={step.id}
-            length={20}
-            name={step.name}
-            applicants={applicants.filter((a) => a.columnId == step.id)}
-          />
+      <DndContext
+        sensors={sensors}
+        onDragOver={onDragOver}
+        onDragStart={onDragStart}
+      >
+        {stages.map((stage) => (
+          <StepColumn stage={stage} key={stage.id} />
         ))}
 
         <DragOverlay>
-          {activeApplicant ? (
-            <ApplicantCard
+          {activeCandidate ? (
+            <CandidateCard
               customClass="border-2 border-primary-400"
-              applicant={activeApplicant}
+              candidate={activeCandidate}
             />
           ) : null}
         </DragOverlay>

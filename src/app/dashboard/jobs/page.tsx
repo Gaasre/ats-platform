@@ -50,7 +50,6 @@ export default function JobsPage() {
     const fetchData = async () => {
       setLoading(true);
       const data = await getJobs();
-      console.log(data);
       setJobs(data);
       setLoading(false);
     };

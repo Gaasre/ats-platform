@@ -49,7 +49,7 @@ export async function POST(
       "fileKeys",
     ]);
 
-    const candidate = await prisma.candidate.create({
+    await prisma.candidate.create({
       data: {
         stageId: stageId,
         email: data.get("email") as string,
@@ -57,23 +57,22 @@ export async function POST(
         lastName: data.get("lastName") as string,
         phone: data.get("phone") as string,
         customFields: JSON.stringify(customFields),
+        date: new Date(),
         jobId: params.id,
       },
     });
 
-    console.log(candidate);
-
-    await Promise.all(
-      fileKeys.map(async (key) => {
-        const file = data.get(key) as unknown as File;
-        // POC
-        // Change this with S3
-        const bytes = await file.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-        const path = join("/", "tmp", file.name);
-        await writeFile(path, buffer);
-      })
-    );
+    // await Promise.all(
+    //   fileKeys.map(async (key) => {
+    //     const file = data.get(key) as unknown as File;
+    //     // POC
+    //     // Change this with S3
+    //     const bytes = await file.arrayBuffer();
+    //     const buffer = Buffer.from(bytes);
+    //     const path = join("/", "tmp", file.name);
+    //     await writeFile(path, buffer);
+    //   })
+    // );
 
     return new NextResponse(
       JSON.stringify({
