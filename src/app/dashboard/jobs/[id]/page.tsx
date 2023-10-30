@@ -25,13 +25,10 @@ export default function JobPage({
   };
 }) {
   const [job, setJob] = useState<Job>();
-  const [loading, setLoading] = useState(false);
 
   const fetchData = async () => {
-    setLoading(true);
     const data = await getJobDetails(params.id);
     setJob(data);
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -39,9 +36,7 @@ export default function JobPage({
   }, []);
 
   if (job) {
-    return loading ? (
-      <Spinner size="lg" />
-    ) : (
+    return (
       <div>
         <div className="flex items-center gap-4 mb-8">
           <Button
