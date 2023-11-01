@@ -78,7 +78,7 @@ export default function Board({ stages, onCandidateMove }: Props) {
   }
 
   return (
-    <div className="flex gap-6 h-full">
+    <div className="flex gap-6 h-full mt-4">
       <DndContext
         sensors={sensors}
         onDragOver={onDragOver}

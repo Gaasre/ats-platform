@@ -2,6 +2,7 @@ import { z } from "zod";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
 
 const fieldSchema = z.object({
   valueType: z.enum([

@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import Steps from "./steps";
-import { headers } from "next/headers";
 import { Job } from "@/interfaces/job";
+import { headers } from "next/headers";
 
 async function getJobDetails(id: string): Promise<Job & { error?: string }> {
   const req = await fetch(`http://localhost:3000/api/dashboard/jobs/${id}`, {
@@ -9,7 +9,7 @@ async function getJobDetails(id: string): Promise<Job & { error?: string }> {
     headers: headers(),
   });
 
-  const res = await req.json();
+  const res = req.json();
   return res;
 }
 

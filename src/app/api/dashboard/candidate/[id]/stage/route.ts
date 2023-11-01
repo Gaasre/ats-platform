@@ -2,6 +2,7 @@ import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import prisma from "@/lib/prisma";
 
 const stageSchema = z.object({
   stageId: z.string(),

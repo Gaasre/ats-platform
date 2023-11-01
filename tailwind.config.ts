@@ -8,6 +8,14 @@ const config: Config = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
+  safelist: [
+    {
+      pattern: /bg-(success|primary|warning|danger)-100/,
+    },
+    {
+      pattern: /bg-(success|primary|warning|danger)/,
+    },
+  ],
   theme: {
     extend: {
       backgroundImage: {

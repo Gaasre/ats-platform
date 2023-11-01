@@ -11,7 +11,7 @@ const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
 async function getJobDetails(id: string): Promise<Job & { error?: string }> {
   const req = await fetch(`http://localhost:3000/api/jobs/${id}/details`, {
     method: "GET",
-    headers: headers(),
+    headers: headers()
   });
 
   const res = await req.json();

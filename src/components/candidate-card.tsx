@@ -1,10 +1,12 @@
 import { Candidate } from "@/interfaces/candidate";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Card, CardBody, CardHeader, CardFooter } from "@nextui-org/card";
+import { Card, CardBody } from "@nextui-org/card";
 import { Avatar } from "@nextui-org/avatar";
-import { Divider } from "@nextui-org/divider";
-import { File } from "lucide-react";
+import moment from "moment";
+import { Button } from "@nextui-org/button";
+import { Link } from "@nextui-org/link";
+import CandidateInfos from "./candidate-infos";
 
 type Props = {
   candidate: Candidate;
@@ -37,31 +39,33 @@ export default function CandidateCard({ candidate, customClass }: Props) {
       <div
         ref={setNodeRef}
         style={style}
-        className="rounded-xl w-full p-2 shadow border-2 border-primary-400 h-[105px] bg-primary-100"
+        className="rounded w-full shadow border-2 border-primary-400 h-[120px] bg-primary-100"
       ></div>
     );
   }
 
   return (
-    <Card ref={setNodeRef} style={style} {...listeners} {...attributes}>
-      <CardHeader>
-        <div className="flex gap-2 items-center">
+    <Card
+      className="rounded"
+      ref={setNodeRef}
+      style={style}
+      {...listeners}
+      {...attributes}
+    >
+      <CardBody>
+        <div className="flex space-x-4 w-full">
           <Avatar name={candidate.firstName} />
-          <div>
+          <div className="flex-1">
             <p className="font-semibold">
               {candidate.firstName} {candidate.lastName}
             </p>
-            <p className="text-xs text-foreground-500">2 days ago</p>
+            <p className="text-xs text-foreground-500 mb-2">
+              {moment(candidate.date).fromNow()}
+            </p>
+            <CandidateInfos />
           </div>
         </div>
-      </CardHeader>
-      <Divider />
-      <CardFooter>
-        <div className="flex gap-1 items-center flex-row-reverse w-full px-2">
-          <File size={14} />
-          <p className="text-xs font-semibold">2</p>
-        </div>
-      </CardFooter>
+      </CardBody>
     </Card>
   );
 }

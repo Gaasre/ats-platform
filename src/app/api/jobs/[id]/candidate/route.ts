@@ -1,7 +1,6 @@
-import { writeFile } from "fs/promises";
 import { omit } from "lodash";
 import { NextRequest, NextResponse } from "next/server";
-import { join } from "path";
+import prisma from "@/lib/prisma";
 
 export async function POST(
   request: NextRequest,
