@@ -129,6 +129,9 @@ export default function CandidateInfos({
                   <Tab key="communications" title="Communications">
                     Communications
                   </Tab>
+                  <Tab key="experience" title="Experience & Education">
+                    Experience & Education
+                  </Tab>
                   <Tab key="documents" title="Documents">
                     Documents
                   </Tab>
