@@ -1,3 +1,5 @@
+import { Prisma } from "@prisma/client";
+
 export interface Candidate {
   id: string;
   firstName: string;
@@ -7,4 +9,5 @@ export interface Candidate {
   jobId: string;
   date: Date;
   stageId: string;
+  customFields: string;
 }

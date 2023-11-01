@@ -18,6 +18,7 @@ export default function CandidateCard({ candidate, customClass }: Props) {
     attributes,
     listeners,
     setNodeRef,
+    setActivatorNodeRef,
     transform,
     transition,
     isDragging,
@@ -45,26 +46,26 @@ export default function CandidateCard({ candidate, customClass }: Props) {
   }
 
   return (
-    <Card
-      className="rounded"
-      ref={setNodeRef}
-      style={style}
-      {...listeners}
-      {...attributes}
-    >
+    <Card className="rounded" {...attributes} style={style} ref={setNodeRef}>
       <CardBody>
-        <div className="flex space-x-4 w-full">
-          <Avatar name={candidate.firstName} />
-          <div className="flex-1">
-            <p className="font-semibold">
+        <div
+          className="flex space-x-4 w-full"
+          ref={setActivatorNodeRef}
+          {...listeners}
+        >
+          <div className="w-[40px]">
+            <Avatar name={candidate.firstName} />
+          </div>
+          <div className="flex-1 overflow-hidden">
+            <p className="font-semibold whitespace-nowrap overflow-hidden text-ellipsis">
               {candidate.firstName} {candidate.lastName}
             </p>
             <p className="text-xs text-foreground-500 mb-2">
               {moment(candidate.date).fromNow()}
             </p>
-            <CandidateInfos />
           </div>
         </div>
+        <CandidateInfos candidate={candidate} />
       </CardBody>
     </Card>
   );

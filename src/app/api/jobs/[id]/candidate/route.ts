@@ -1,4 +1,3 @@
-import { omit } from "lodash";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
@@ -22,6 +21,16 @@ export async function POST(
             order: 0,
           },
         },
+        form: {
+          include: {
+            titleField: true,
+            paragraphField: true,
+            radioField: true,
+            dropdownField: true,
+            formField: true,
+            fileField: true,
+          },
+        },
       },
     });
 
@@ -38,15 +47,49 @@ export async function POST(
 
     const stageId = job.stages[0].id;
     const data = await request.formData();
-    const fileKeys = JSON.parse(data.get("fileKeys") as string) as string[];
-    const customFields = omit(data, [
-      ...fileKeys,
-      "email",
-      "firstName",
-      "lastName",
-      "phone",
-      "fileKeys",
-    ]);
+    const fileKeys = [
+      ...(JSON.parse(data.get("fileKeys") as string) as string[]),
+      "resume",
+    ];
+    const customFields: {
+      id: string;
+      name: string | undefined;
+      value: string;
+    }[] = [];
+
+    data.forEach((value, key) => {
+      if (
+        ![
+          ...fileKeys,
+          "email",
+          "firstName",
+          "lastName",
+          "phone",
+          "fileKeys",
+        ].includes(key)
+      ) {
+        const formFound = job.form.find((form) => form.id == key);
+        const name =
+          formFound?.valueType == "TITLE"
+            ? formFound.titleField?.value
+            : formFound?.valueType == "RADIO"
+            ? formFound?.radioField?.label
+            : formFound?.valueType == "PARAGRAPH"
+            ? formFound?.paragraphField?.value
+            : formFound?.valueType == "FORM"
+            ? formFound?.formField?.label
+            : formFound?.valueType == "DROPDOWN"
+            ? formFound?.dropdownField?.label
+            : formFound?.valueType == "FILE"
+            ? formFound?.fileField?.label
+            : "";
+        customFields.push({
+          id: key,
+          name: name,
+          value: value as string,
+        });
+      }
+    });
 
     await prisma.candidate.create({
       data: {
