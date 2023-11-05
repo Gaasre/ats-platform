@@ -1,3 +1,5 @@
+"use client";
+
 import { Tabs, Tab } from "@nextui-org/tabs";
 import { Button } from "@nextui-org/button";
 import {
@@ -9,8 +11,16 @@ import {
   ModalFooter,
 } from "@nextui-org/modal";
 import { Avatar } from "@nextui-org/avatar";
-import moment from "moment";
 import { Candidate } from "@/interfaces/candidate";
+import { Document, Page } from "react-pdf";
+import { pdfjs } from "react-pdf";
+import "react-pdf/dist/Page/AnnotationLayer.css";
+import "react-pdf/dist/Page/TextLayer.css";
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+  "pdfjs-dist/build/pdf.worker.min.js",
+  import.meta.url
+).toString();
 
 export default function CandidateInfos({
   candidate,
@@ -133,7 +143,12 @@ export default function CandidateInfos({
                     Experience & Education
                   </Tab>
                   <Tab key="documents" title="Documents">
-                    Documents
+                    <div className="max-h-[500px] overflow-auto">
+                      Resume
+                      <Document file={candidate.resumeLink}>
+                        <Page pageNumber={1} />
+                      </Document>
+                    </div>
                   </Tab>
                   <Tab key="assignments" title="Assignments">
                     Assignments

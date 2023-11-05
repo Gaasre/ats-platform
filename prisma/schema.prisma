@@ -198,6 +198,7 @@ model Candidate {
   lastName     String
   email        String
   phone        String
+  resumeLink   String   @default("")
   date         DateTime
   customFields Json
   // Relationships

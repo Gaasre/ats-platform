@@ -106,6 +106,15 @@ export async function POST(
       },
     });
 
+    await prisma.candidate.update({
+      where: { id: id },
+      data: {
+        resumeLink: `https://pub-ccd5efe6d4824470bfd336f28a8d1322.r2.dev/resume-${id}.${data.get(
+          "resume"
+        )}`,
+      },
+    });
+
     const urls = await Promise.all(
       fileKeys.map(async (key) => {
         console.log(`${key}-${id}.${data.get(key)}`);
