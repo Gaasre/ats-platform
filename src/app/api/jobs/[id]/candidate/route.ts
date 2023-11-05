@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import S3 from "@/lib/s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import prisma from "@/lib/prisma";
+import { PutObjectCommand } from "@aws-sdk/client-s3";
 
 export async function POST(
   request: NextRequest,
@@ -49,7 +52,6 @@ export async function POST(
     const data = await request.formData();
     const fileKeys = [
       ...(JSON.parse(data.get("fileKeys") as string) as string[]),
-      "resume",
     ];
     const customFields: {
       id: string;
@@ -91,7 +93,7 @@ export async function POST(
       }
     });
 
-    await prisma.candidate.create({
+    const { id } = await prisma.candidate.create({
       data: {
         stageId: stageId,
         email: data.get("email") as string,
@@ -104,22 +106,22 @@ export async function POST(
       },
     });
 
-    // await Promise.all(
-    //   fileKeys.map(async (key) => {
-    //     const file = data.get(key) as unknown as File;
-    //     // POC
-    //     // Change this with S3
-    //     const bytes = await file.arrayBuffer();
-    //     const buffer = Buffer.from(bytes);
-    //     const path = join("/", "tmp", file.name);
-    //     await writeFile(path, buffer);
-    //   })
-    // );
+    const urls = await Promise.all(
+      fileKeys.map(async (key) => {
+        console.log(`${key}-${id}.${data.get(key)}`);
+        const command = new PutObjectCommand({
+          Bucket: "ats-platform",
+          Key: `${key}-${id}.${data.get(key)}`,
+        });
+        const url = await getSignedUrl(S3, command, { expiresIn: 60 });
+        return { key, url };
+      })
+    );
 
     return new NextResponse(
       JSON.stringify({
         status: "success",
-        message: "Candidate application success",
+        urls,
       }),
       { status: 200 }
     );

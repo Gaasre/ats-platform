@@ -22,8 +22,12 @@ async function submitForm(form: FieldValues, jobId: string) {
   for (var key in form) {
     if (form[key] instanceof File) {
       fileKeys.push(key);
+      const file = form[key] as File;
+      const filename = file.name.split(".");
+      formData.append(key, filename[filename.length - 1]);
+    } else {
+      formData.append(key, form[key]);
     }
-    formData.append(key, form[key]);
   }
   formData.append("fileKeys", JSON.stringify(fileKeys));
 
@@ -33,6 +37,23 @@ async function submitForm(form: FieldValues, jobId: string) {
   });
 
   const res = await req.json();
+
+  if (res.urls) {
+    const links: { key: string; url: string }[] = res.urls;
+    await Promise.all(
+      links.map(async ({ key, url }) => {
+        const file: File = form[key];
+        await fetch(url, {
+          method: "PUT",
+          body: file,
+          headers: {
+            "Content-Type": file.type,
+          },
+        });
+      })
+    );
+  }
+
   return res;
 }
 
