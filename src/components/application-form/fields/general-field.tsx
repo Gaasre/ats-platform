@@ -76,6 +76,20 @@ export default function GeneralField({ field, jobId }: Props) {
               } else {
                 return f;
               }
+            case ValueType.FILE:
+              var { status } = await editRequest(jobId, field.id, {
+                valueType: ValueType.FILE,
+                value: omit(newValue, ["customFieldId"]),
+              });
+              if (status === 200) {
+                return {
+                  ...f,
+                  fileField: newValue as FileFieldType,
+                  isEditing: false,
+                };
+              } else {
+                return f;
+              }
             case ValueType.TITLE:
               var { status } = await editRequest(jobId, field.id, {
                 valueType: ValueType.TITLE,

@@ -122,7 +122,7 @@ export async function PUT(
         });
         break;
       case "FILE":
-        await prisma.formField.update({
+        await prisma.fileField.update({
           where: {
             customFieldId: fieldId,
           },
