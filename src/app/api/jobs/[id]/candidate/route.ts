@@ -86,12 +86,14 @@ export async function POST(
             : formFound?.valueType == "FILE"
             ? formFound?.fileField?.label
             : "";
-        customFields.push({
-          id: key,
-          type: "text",
-          name: name,
-          value: value as string,
-        });
+        if (value != "undefined") {
+          customFields.push({
+            id: key,
+            type: "text",
+            name: name,
+            value: value != "null" ? (value as string) : "",
+          });
+        }
       }
     });
 
