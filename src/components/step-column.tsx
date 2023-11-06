@@ -27,8 +27,6 @@ export default function StepColumn({
     [candidates]
   );
 
-  console.log(color);
-
   return (
     <div ref={setNodeRef} className="w-[250px] gap-2 flex flex-col h-full">
       <div className="flex gap-2 items-center">

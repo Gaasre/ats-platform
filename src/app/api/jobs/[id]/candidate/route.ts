@@ -55,6 +55,7 @@ export async function POST(
     ];
     const customFields: {
       id: string;
+      type: "text" | "file";
       name: string | undefined;
       value: string;
     }[] = [];
@@ -87,6 +88,7 @@ export async function POST(
             : "";
         customFields.push({
           id: key,
+          type: "text",
           name: name,
           value: value as string,
         });
@@ -106,26 +108,37 @@ export async function POST(
       },
     });
 
+    const urls = await Promise.all(
+      fileKeys.map(async (key) => {
+        const command = new PutObjectCommand({
+          Bucket: "ats-platform",
+          Key: `${key}-${id}.${data.get(key)}`,
+        });
+        const url = await getSignedUrl(S3, command, { expiresIn: 60 });
+        if (key != "resume") {
+          const formFound = job.form.find((form) => form.id == key);
+          customFields.push({
+            id: key,
+            type: "file",
+            name: formFound?.fileField?.label,
+            value: `https://pub-ccd5efe6d4824470bfd336f28a8d1322.r2.dev/${key}-${id}.${data.get(
+              key
+            )}`,
+          });
+        }
+        return { key, url };
+      })
+    );
+
     await prisma.candidate.update({
       where: { id: id },
       data: {
         resumeLink: `https://pub-ccd5efe6d4824470bfd336f28a8d1322.r2.dev/resume-${id}.${data.get(
           "resume"
         )}`,
+        customFields: JSON.stringify(customFields),
       },
     });
-
-    const urls = await Promise.all(
-      fileKeys.map(async (key) => {
-        console.log(`${key}-${id}.${data.get(key)}`);
-        const command = new PutObjectCommand({
-          Bucket: "ats-platform",
-          Key: `${key}-${id}.${data.get(key)}`,
-        });
-        const url = await getSignedUrl(S3, command, { expiresIn: 60 });
-        return { key, url };
-      })
-    );
 
     return new NextResponse(
       JSON.stringify({
