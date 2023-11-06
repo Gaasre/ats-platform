@@ -16,15 +16,17 @@ export default function CustomForm({ form }: { form: CustomFieldType[] }) {
   function renderField(customField: CustomFieldType) {
     switch (customField.valueType) {
       case "RADIO":
+        const { onChange, ...id } = register(customField.id);
         return (
           <RadioGroup
-            {...register(customField.id)}
+            {...id}
             label={customField.radioField?.label}
             orientation={
               customField.radioField?.orientation == Orientation.VERTICAL
                 ? "vertical"
                 : "horizontal"
             }
+            onChange={(e) => onChange(e)}
           >
             {customField.radioField?.value.map((choice, index) => (
               <Radio key={index} value={choice}>
@@ -35,13 +37,15 @@ export default function CustomForm({ form }: { form: CustomFieldType[] }) {
         );
       case "DROPDOWN":
         if (customField.dropdownField) {
+          const { onChange, ...id } = register(customField.id);
           return (
             <Select
-              {...register(customField.id)}
+              {...id}
               label={customField.dropdownField?.label}
               placeholder="Value"
               className="max-w-xs"
               labelPlacement="outside"
+              onChange={(e) => onChange(e)}
             >
               {customField.dropdownField.value.map((choice, index) => (
                 <SelectItem key={index}>{choice}</SelectItem>
