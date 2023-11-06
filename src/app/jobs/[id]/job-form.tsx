@@ -154,6 +154,7 @@ export default function JobForm({
                   type="text"
                   label="First Name"
                   labelPlacement="outside"
+                  isRequired
                   placeholder="First Name"
                   color={errors.firstName?.message ? "danger" : "default"}
                   errorMessage={errors.firstName?.message as string}
@@ -165,6 +166,7 @@ export default function JobForm({
                   type="text"
                   label="Last Name"
                   labelPlacement="outside"
+                  isRequired
                   placeholder="Last Name"
                   color={errors.lastName?.message ? "danger" : "default"}
                   errorMessage={errors.lastName?.message as string}
@@ -180,6 +182,7 @@ export default function JobForm({
                   })}
                   type="email"
                   label="Email"
+                  isRequired
                   labelPlacement="outside"
                   placeholder="Email"
                   color={errors.email?.message ? "danger" : "default"}
@@ -190,6 +193,7 @@ export default function JobForm({
                     required: "Phone Number is required",
                   })}
                   type="tel"
+                  isRequired
                   label="Phone Number"
                   labelPlacement="outside"
                   placeholder="Phone Number"
@@ -198,11 +202,20 @@ export default function JobForm({
                 />
                 <Controller
                   name="resume"
+                  rules={{
+                    required: "Resume is required",
+                  }}
                   control={control}
-                  render={({ field: { value, onChange, ...field } }) => (
+                  render={({
+                    field: { value, onChange, ...field },
+                    fieldState: { error },
+                  }) => (
                     <label htmlFor="resume">
-                      <span className="block text-small font-medium text-foreground pb-1.5">
-                        Résume
+                      <span
+                        className={`block text-small font-medium pb-1.5 after:ml-0.5 after:content-['*'] after:text-danger 
+                      ${error?.message ? "text-danger" : "text-foreground"}`}
+                      >
+                        Resume
                       </span>
                       <input
                         {...field}
@@ -215,10 +228,23 @@ export default function JobForm({
                         id="resume"
                         className="hidden"
                       />
-                      <div className="w-full cursor-pointer text-small gap-2 text-foreground-500 flex items-center bg-default-100 hover:bg-default-200 px-3 shadow-sm min-h-unit-10 rounded-medium transition-background duration-150">
+                      <div
+                        className={`w-full cursor-pointer text-small gap-2 flex items-center ${
+                          error?.message
+                            ? "text-danger bg-danger-50 hover:bg-danger-100"
+                            : "text-foreground-500 bg-default-100 hover:bg-default-200"
+                        } px-3 shadow-sm min-h-unit-10 rounded-medium transition-background duration-150`}
+                      >
                         <Upload size={14} />{" "}
                         {value ? value.name : "Attach file"}
                       </div>
+                      {error?.message ? (
+                        <div className="text-tiny text-danger mt-1">
+                          {error?.message}
+                        </div>
+                      ) : (
+                        ""
+                      )}
                     </label>
                   )}
                 ></Controller>
