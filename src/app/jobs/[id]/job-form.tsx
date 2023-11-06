@@ -204,6 +204,16 @@ export default function JobForm({
                   name="resume"
                   rules={{
                     required: "Resume is required",
+                    validate: (value) => {
+                      console.log(value);
+                      if (value.type != "application/pdf") {
+                        return "Invalid file format. Only PDF files are allowed.";
+                      }
+                      if (value.size > 5 * 10 ** 6) {
+                        return "Invalid file size. The file shouldn't exceed 5MBs";
+                      }
+                      return true;
+                    },
                   }}
                   control={control}
                   render={({
@@ -224,6 +234,7 @@ export default function JobForm({
                             event.target.files ? event.target.files[0] : null
                           )
                         }
+                        accept="application/pdf"
                         type="file"
                         id="resume"
                         className="hidden"
@@ -243,7 +254,9 @@ export default function JobForm({
                           {error?.message}
                         </div>
                       ) : (
-                        ""
+                        <div className="text-tiny text-foreground-400 mt-1">
+                          Please upload in PDF format
+                        </div>
                       )}
                     </label>
                   )}
