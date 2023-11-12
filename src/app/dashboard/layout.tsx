@@ -1,5 +1,7 @@
 import DashboardHeader from "@/components/dashboard-header";
 import "../globals.css";
+import { Button } from "@nextui-org/button";
+import { User } from "@nextui-org/user";
 import LeftMenu from "@/components/left-menu";
 import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
@@ -18,14 +20,22 @@ export default async function DashboardLayout({
 
   return (
     <main className="min-h-screen">
-      <div className="px-8 border-b border-foreground-200">
-        <DashboardHeader></DashboardHeader>
-      </div>
       <div className="flex w-full">
-        <div className="border-r border-foreground-200 h-[calc(100vh-65px)]">
-          <LeftMenu></LeftMenu>
+        <div className="border-r border-foreground-200 h-screen">
+          <LeftMenu>
+            <User
+              as="button"
+              className="mb-4 transition-transform"
+              name={session?.user.name || "Unknown"}
+              description={session?.user.Company?.name || "No Company"}
+              avatarProps={{
+                isBordered: true,
+                src: "https://i.pravatar.cc/150?img=68",
+              }}
+            />
+          </LeftMenu>
         </div>
-        <div className="grow p-8 bg-foreground-50 overflow-y-auto h-[calc(100vh-65px)]">
+        <div className="grow p-8 bg-[#f5f6fa] overflow-y-auto h-screen">
           {children}
         </div>
       </div>

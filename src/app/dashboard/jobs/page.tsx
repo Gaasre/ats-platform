@@ -73,7 +73,7 @@ export default function JobsPage() {
         </Button>
       </div>
       <div className="flex w-full flex-col">
-        <Tabs aria-label="Options">
+        <Tabs aria-label="Options" className="bg-[#f5f6fa]">
           <Tab key="active" title="Active">
             {loading ? (
               <Spinner size="sm" />

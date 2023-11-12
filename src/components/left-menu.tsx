@@ -1,54 +1,143 @@
-import { authOptions } from "@/lib/auth";
+"use client";
+
 import { Link } from "@nextui-org/link";
-import { Button } from "@nextui-org/button";
-import { User } from "@nextui-org/user";
 import {
   Briefcase,
   Calendar,
   KanbanSquare,
   LayoutDashboard,
+  LogOut,
   MessagesSquare,
+  Settings,
 } from "lucide-react";
-import { getServerSession } from "next-auth";
+import { usePathname } from "next/navigation";
+import {
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownItem,
+} from "@nextui-org/dropdown";
+import { signOut } from "next-auth/react";
 
-export default async function LeftMenu() {
-  const session = await getServerSession(authOptions);
+export default function LeftMenu({ children }: { children: JSX.Element }) {
+  const pathname = usePathname();
+
+  const pathClass = (path: string) => {
+    const splitPath = pathname.split("/");
+    if (splitPath.length <= 2) {
+      if (path == "dashboard") {
+        return {
+          menu: "text-primary bg-primary-50 shadow shadow-primary-200",
+          attachment: "w-2",
+        };
+      } else {
+        return {
+          menu: "text-neutral-500 bg-white shadow shadow-transparent",
+          attachment: "w-0",
+        };
+      }
+    } else {
+      if (splitPath[2].startsWith(path)) {
+        return {
+          menu: "text-primary bg-primary-50 shadow shadow-primary-200",
+          attachment: "w-2",
+        };
+      } else {
+        return {
+          menu: "text-neutral-500 bg-white shadow shadow-transparent",
+          attachment: "w-0",
+        };
+      }
+    }
+  };
+
   return (
     <div className="flex flex-col w-[250px] px-6 gap-1 py-6 justify-between h-full">
-      <div className="flex flex-col">
-        <p className="select-none uppercase pl-2 font-semibold text-sm mb-2">
+      <div className="flex flex-col gap-y-2">
+        <p className="select-none uppercase pl-2 font-medium text-xs text-neutral-400">
           Menu
         </p>
-        <Link isBlock href="#" color="foreground" size="sm">
+        <Link
+          className={`hover:bg-primary-50 hover:text-primary hover:after:opacity-0 rounded-lg duration-200 font-medium py-2 relative ${
+            pathClass("dashboard").menu
+          }`}
+          isBlock
+          href="#"
+          color="foreground"
+          size="sm"
+        >
+          <div
+            className={`${
+              pathClass("dashboard").attachment
+            } rounded-l h-full bg-primary absolute -right-6 top-0 duration-200 transition-all`}
+          ></div>
           <div className="flex items-center gap-4">
-            <span className="p-1.5 rounded-full bg-foreground-100">
+            <span className="p-1.5 rounded-full">
               <LayoutDashboard size={14} strokeWidth={2} />
             </span>
             Dashboard
           </div>
         </Link>
-        <Link isBlock href="#" color="foreground" size="sm">
+        <Link
+          className={`hover:bg-primary-50 hover:after:opacity-0 hover:text-primary duration-200 rounded-lg font-medium py-2 relative ${
+            pathClass("calendar").menu
+          }`}
+          isBlock
+          href="#"
+          size="sm"
+        >
+          <div
+            className={`${
+              pathClass("calendar").attachment
+            } rounded-l h-full bg-primary absolute -right-6 top-0 duration-200 transition-all`}
+          ></div>
           <div className="flex items-center gap-4">
-            <span className="p-1.5 rounded-full bg-foreground-100">
+            <span className="p-1.5 rounded-full">
               <Calendar size={14} strokeWidth={2} />
             </span>
             Calendar
           </div>
         </Link>
-        <p className="select-none uppercase pl-2 font-semibold text-sm mb-2 mt-6">
+        <p className="select-none uppercase pl-2 font-medium text-xs text-neutral-400 mt-6">
           Recruitment
         </p>
-        <Link isBlock href="/dashboard/jobs" color="foreground" size="sm">
+        <Link
+          className={`hover:bg-primary-50 hover:after:opacity-0 hover:text-primary rounded-lg duration-200 font-medium py-2 relative ${
+            pathClass("jobs").menu
+          }`}
+          isBlock
+          href="/dashboard/jobs"
+          color="foreground"
+          size="sm"
+        >
+          <div
+            className={`${
+              pathClass("jobs").attachment
+            } rounded-l h-full bg-primary absolute -right-6 top-0 duration-200 transition-all`}
+          ></div>
           <div className="flex items-center gap-4">
-            <span className="p-1.5 rounded-full bg-foreground-100">
+            <span className="p-1.5 rounded-full">
               <Briefcase size={14} />
             </span>
             Jobs
           </div>
         </Link>
-        <Link isBlock href="/dashboard/candidates" color="foreground" size="sm">
+        <Link
+          className={`hover:bg-primary-50 hover:after:opacity-0 hover:text-primary rounded-lg duration-200 font-medium py-2 relative ${
+            pathClass("candidates").menu
+          }`}
+          isBlock
+          href="/dashboard/candidates"
+          color="foreground"
+          size="sm"
+        >
+          <div
+            className={`${
+              pathClass("candidates").attachment
+            } rounded-l h-full bg-primary absolute -right-6 top-0 duration-200 transition-all`}
+          ></div>
           <div className="flex items-center gap-4">
-            <span className="p-1.5 rounded-full bg-foreground-100">
+            <span className="p-1.5 rounded-full">
               <KanbanSquare size={14} />
             </span>
             Candidates
@@ -56,50 +145,72 @@ export default async function LeftMenu() {
         </Link>
         <Link
           isBlock
+          className={`hover:bg-primary-50 hover:after:opacity-0 hover:text-primary rounded-lg duration-200 font-medium py-2 relative ${
+            pathClass("assessments").menu
+          }`}
           href="/dashboard/assessments"
           color="foreground"
           size="sm"
         >
+          <div
+            className={`${
+              pathClass("assessments").attachment
+            } rounded-l h-full bg-primary absolute -right-6 top-0 duration-200 transition-all`}
+          ></div>
           <div className="flex items-center gap-4">
-            <span className="p-1.5 rounded-full bg-foreground-100">
+            <span className="p-1.5 rounded-full">
               <MessagesSquare size={14} strokeWidth={2} />
             </span>
             Assessments
           </div>
         </Link>
-        <p className="select-none uppercase pl-2 font-semibold text-sm mb-2 mt-6">
+        <p className="select-none uppercase pl-2 font-medium text-xs text-neutral-400 mt-6">
           Organization
         </p>
-        <Link isBlock href="#" color="foreground" size="sm">
+        <Link
+          className={`hover:bg-primary-50 hover:after:opacity-0 hover:text-primary rounded-lg duration-200 font-medium py-2 relative ${
+            pathClass("team").menu
+          }`}
+          isBlock
+          href="#"
+          color="foreground"
+          size="sm"
+        >
+          <div
+            className={`${
+              pathClass("team").attachment
+            } rounded-l h-full bg-primary absolute -right-6 top-0 duration-200 transition-all`}
+          ></div>
           <div className="flex items-center gap-4">
-            <span className="p-1.5 rounded-full bg-foreground-100">
+            <span className="p-1.5 rounded-full">
               <LayoutDashboard size={14} strokeWidth={2} />
             </span>
             Team
           </div>
         </Link>
       </div>
-      <div>
-        <User
-          className="mb-4"
-          name={session?.user.name || "Unknown"}
-          description={session?.user.Company?.name || "No Company"}
-          avatarProps={{
-            src: "https://i.pravatar.cc/150?img=68",
-          }}
-        />
-        {!session?.user.Company && (
-          <Button
-            as={Link}
-            href="/dashboard/company/new"
-            variant="shadow"
-            fullWidth
-            color="primary"
+      <Dropdown placement="top-end">
+        <DropdownTrigger>{children}</DropdownTrigger>
+        <DropdownMenu aria-label="Profile Actions" variant="flat">
+          <DropdownItem
+            startContent={<Settings size={16} />}
+            key="preferences"
+            description="Account settings"
           >
-            Create Company
-          </Button>
-        )}
-      </div>
+            Preferences
+          </DropdownItem>
+          <DropdownItem
+            startContent={<LogOut size={16} />}
+            className="text-danger"
+            key="logout"
+            color="danger"
+            onClick={() => signOut()}
+            description="Sign-out from your account"
+          >
+            Log Out
+          </DropdownItem>
+        </DropdownMenu>
+      </Dropdown>
     </div>
   );
 }

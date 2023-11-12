@@ -26,6 +26,50 @@ const config: Config = {
     },
   },
   darkMode: "class",
-  plugins: [require("@tailwindcss/typography"), nextui()],
+  plugins: [
+    require("@tailwindcss/typography"),
+    nextui({
+      themes: {
+        "purple-dark": {
+          extend: "light", // <- inherit default values from dark theme
+          colors: {
+            background: "#ffffff",
+            foreground: "#000000",
+            primary: {
+              50: "#daeded",
+              100: "#cee7e7",
+              200: "#c1e1e1",
+              300: "#9ccecf",
+              400: "#52aaab",
+              500: "#088587",
+              600: "#07787a",
+              700: "#066465",
+              800: "#055051",
+              900: "#044142",
+              DEFAULT: "#088587",
+              foreground: "#ffffff",
+            },
+            default: {
+              100: "#ebedf5",
+            },
+            focus: "#F182F6",
+          },
+          layout: {
+            disabledOpacity: "0.3",
+            radius: {
+              small: "4px",
+              medium: "6px",
+              large: "8px",
+            },
+            borderWidth: {
+              small: "1px",
+              medium: "2px",
+              large: "3px",
+            },
+          },
+        },
+      },
+    }),
+  ],
 };
 export default config;
