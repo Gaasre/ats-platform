@@ -32,7 +32,7 @@ export default function CandidateInfos({
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <div className="flex flex-row-reverse">
-      <Button onPress={onOpen} color="default" size="sm" variant="flat">
+      <Button onPress={onOpen} size="sm" variant="flat">
         View Profile
       </Button>
       <Modal isDismissable={false} size="3xl" isOpen={isOpen} onClose={onClose}>
@@ -41,7 +41,11 @@ export default function CandidateInfos({
             <>
               <ModalHeader>
                 <div className="flex space-x-4 w-full items-center">
-                  <Avatar name={candidate.firstName} size="lg" />
+                  <Avatar
+                    name={candidate.firstName}
+                    size="lg"
+                    className="bg-default-100"
+                  />
                   <div className="flex-1">
                     <p className="font-semibold">
                       {candidate.firstName} {candidate.lastName}
@@ -128,7 +132,7 @@ export default function CandidateInfos({
                       <h2 className="text-xl font-semibold mb-4">Notes</h2>
                       <div>
                         <div className="flex space-x-4 w-full items-center mb-2">
-                          <Avatar name="HR Lady" />
+                          <Avatar className="bg-default-100" name="HR Lady" />
                           <div className="flex-1">
                             <p className="font-semibold">HR Lady</p>
                             <p className="text-xs text-foreground-500 mb-2">

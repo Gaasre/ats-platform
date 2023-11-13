@@ -54,7 +54,7 @@ export default function CandidateCard({ candidate, customClass }: Props) {
           {...listeners}
         >
           <div className="w-[40px]">
-            <Avatar name={candidate.firstName} />
+            <Avatar className="bg-default-100" name={candidate.firstName} />
           </div>
           <div className="flex-1 overflow-hidden">
             <p className="font-semibold whitespace-nowrap overflow-hidden text-ellipsis">
