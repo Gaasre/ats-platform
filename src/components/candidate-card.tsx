@@ -1,15 +1,13 @@
-import { Candidate } from "@/interfaces/candidate";
+import { ICandidate } from "@/interfaces/candidate";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Card, CardBody } from "@nextui-org/card";
 import { Avatar } from "@nextui-org/avatar";
 import moment from "moment";
-import { Button } from "@nextui-org/button";
-import { Link } from "@nextui-org/link";
 import CandidateInfos from "./candidate-infos";
 
 type Props = {
-  candidate: Candidate;
+  candidate: ICandidate;
   customClass?: string;
 };
 

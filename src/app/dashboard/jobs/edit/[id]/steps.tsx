@@ -67,7 +67,7 @@ export default function Steps({ id, job }: { id: string; job: Job }) {
   return (
     <div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-medium">Add New Job</h1>
+        <h1 className="text-3xl font-medium">Edit Job</h1>
         <div className="flex gap-4 items-center">
           <Button variant="light" onClick={saveExit} isLoading={isLoading}>
             Save & Close

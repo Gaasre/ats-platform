@@ -14,7 +14,7 @@ import {
 import CandidateCard from "./candidate-card";
 import { useState } from "react";
 import StepColumn from "./step-column";
-import { Candidate } from "@/interfaces/candidate";
+import { ICandidate } from "@/interfaces/candidate";
 import { arrayMove } from "@dnd-kit/sortable";
 import { Stage } from "@/interfaces/stage";
 
@@ -25,7 +25,7 @@ type Props = {
 
 export default function Board({ stages, onCandidateMove }: Props) {
   const [droppedId, setDroppedId] = useState<number | null>(null);
-  const [activeCandidate, setActiveCandidate] = useState<Candidate | null>();
+  const [activeCandidate, setActiveCandidate] = useState<ICandidate | null>();
   const mouseSensor = useSensor(MouseSensor, {
     // Require the mouse to move by 10 pixels before activating
     activationConstraint: {

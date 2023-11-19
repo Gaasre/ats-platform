@@ -205,7 +205,6 @@ export default function JobForm({
                   rules={{
                     required: "Resume is required",
                     validate: (value) => {
-                      console.log(value);
                       if (value.type != "application/pdf") {
                         return "Invalid file format. Only PDF files are allowed.";
                       }

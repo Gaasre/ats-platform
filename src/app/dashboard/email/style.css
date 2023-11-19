@@ -1,0 +1,23 @@
+.tiptap {
+  @apply shadow-sm px-3 py-2 bg-default-100/50 transition-background outline-none rounded-medium min-h-[400px];
+}
+
+.tiptap:hover {
+  @apply bg-default-100;
+}
+
+.mention {
+  @apply rounded font-medium bg-primary py-1 px-2 text-xs text-foreground-50;
+}
+
+.items {
+  @apply relative p-1 overflow-hidden bg-background shadow w-[200px] border rounded-md;
+}
+
+.item {
+  @apply px-2 py-1 m-0 rounded-md border border-transparent text-left;
+}
+
+.item.is-selected {
+  @apply bg-primary-50;
+}

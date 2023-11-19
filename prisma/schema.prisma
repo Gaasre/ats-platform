@@ -101,19 +101,21 @@ model Stage {
   job        Job         @relation(fields: [jobId], references: [id], onDelete: Cascade)
   jobId      String
   candidates Candidate[]
+  actions    Action[]
 }
 
 model Company {
-  id      String  @id @default(cuid())
-  name    String
-  website String
-  head    User?   @relation(fields: [headId], references: [id], onDelete: SetNull)
-  headId  String? @unique
+  id            String          @id @default(cuid())
+  name          String
+  website       String
+  head          User?           @relation(fields: [headId], references: [id], onDelete: SetNull)
+  headId        String?         @unique
   // Additional fields for company-related information
   // Example: industry, headquarters location, company size, etc.
   // Relationships
-  jobs    Job[] // A company can have multiple job listings
-  user    User[]  @relation(name: "employees")
+  jobs          Job[] // A company can have multiple job listings
+  user          User[]          @relation(name: "employees")
+  EmailTemplate EmailTemplate[]
 }
 
 model TitleField {
@@ -193,17 +195,92 @@ enum Orientation {
 }
 
 model Candidate {
-  id           String   @id @default(cuid())
-  firstName    String
-  lastName     String
-  email        String
-  phone        String
-  resumeLink   String   @default("")
-  date         DateTime
-  customFields Json
+  id              String           @id @default(cuid())
+  firstName       String
+  lastName        String
+  email           String
+  phone           String
+  resumeLink      String           @default("")
+  date            DateTime
+  customFields    Json
+  // OpenAI fields
+  location        String?
+  portfolio       String?
+  linkedin        String?
+  github          String?
+  university      String?
+  educationLevel  EducationLevel?
+  graduationDate  DateTime?
+  majors          String[]
+  workExperience  WorkExperience[]
+  skills          String[]
+  languages       String[]
+  experienceYears Float?
+  projects        Project[]
+  parsed          Boolean          @default(false)
   // Relationships
-  stage        Stage    @relation(fields: [stageId], references: [id])
-  stageId      String
-  Job          Job      @relation(fields: [jobId], references: [id])
-  jobId        String
+  stage           Stage            @relation(fields: [stageId], references: [id])
+  stageId         String
+  Job             Job              @relation(fields: [jobId], references: [id])
+  jobId           String
+}
+
+model WorkExperience {
+  id          Int       @id @default(autoincrement()) //TODO: Edit
+  jobTitle    String
+  company     String
+  location    String
+  startDate   DateTime
+  endDate     DateTime
+  duration    Float
+  jobSummary  String
+  candidateId String
+  candidate   Candidate @relation(fields: [candidateId], references: [id])
+}
+
+model Project {
+  id          Int       @id @default(autoincrement()) //TODO: Edit
+  name        String    @default("")
+  description String    @default("")
+  url         String    @default("")
+  candidateId String
+  candidate   Candidate @relation(fields: [candidateId], references: [id])
+}
+
+model Action {
+  id              String         @id @default(cuid())
+  type            ActionType
+  emailTemplate   EmailTemplate? @relation(fields: [emailTemplateId], references: [id])
+  note            Note?          @relation(fields: [noteId], references: [id])
+  stage           Stage          @relation(fields: [stageId], references: [id])
+  stageId         String
+  emailTemplateId String?
+  noteId          String?        @unique
+}
+
+model Note {
+  id      String  @id @default(cuid())
+  content String
+  action  Action?
+}
+
+model EmailTemplate {
+  id        String   @id @default(cuid())
+  name      String
+  subject   String
+  body      String
+  actions   Action[]
+  company   Company  @relation(fields: [companyId], references: [id])
+  companyId String
+}
+
+enum ActionType {
+  EMAIL
+  NOTE
+}
+
+enum EducationLevel {
+  BS
+  MS
+  PhD
 }

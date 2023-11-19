@@ -39,7 +39,12 @@ export async function GET(
             order: "asc",
           },
           include: {
-            candidates: true,
+            candidates: {
+              include: {
+                projects: true,
+                workExperience: true,
+              },
+            },
           },
         },
         form: {

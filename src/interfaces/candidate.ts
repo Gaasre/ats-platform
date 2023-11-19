@@ -1,12 +1,13 @@
-export interface Candidate {
-  id: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  jobId: string;
-  date: Date;
-  stageId: string;
+import { Candidate, WorkExperience, Project } from "@prisma/client";
+
+interface ICandidate extends Candidate {
+  workExperience: IWorkExperience[];
+  projects: IProject[];
   customFields: string;
-  resumeLink: string;
 }
+
+interface IWorkExperience extends WorkExperience {}
+
+interface IProject extends Project {}
+
+export type { IWorkExperience, IProject, ICandidate };

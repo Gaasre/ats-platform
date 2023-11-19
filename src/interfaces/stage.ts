@@ -1,10 +1,10 @@
-import { Candidate } from "./candidate";
+import { ICandidate } from "./candidate";
 
 export type Stage = {
   id: string;
   title: string;
   color: string;
   order: number;
-  candidates: Candidate[];
+  candidates: ICandidate[];
   isEditing?: boolean;
 };

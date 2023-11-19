@@ -165,7 +165,7 @@ export default function LeftMenu({ children }: { children: JSX.Element }) {
           </div>
         </Link>
         <p className="select-none uppercase pl-2 font-medium text-xs text-neutral-400 mt-6">
-          Organization
+          Settings
         </p>
         <Link
           className={`hover:bg-primary-50 hover:after:opacity-0 hover:text-primary rounded-lg duration-200 font-medium py-2 relative ${
@@ -186,6 +186,27 @@ export default function LeftMenu({ children }: { children: JSX.Element }) {
               <LayoutDashboard size={14} strokeWidth={2} />
             </span>
             Team
+          </div>
+        </Link>
+        <Link
+          className={`hover:bg-primary-50 hover:after:opacity-0 hover:text-primary rounded-lg duration-200 font-medium py-2 relative ${
+            pathClass("email").menu
+          }`}
+          isBlock
+          href="/dashboard/email"
+          color="foreground"
+          size="sm"
+        >
+          <div
+            className={`${
+              pathClass("email").attachment
+            } rounded-l h-full bg-primary absolute -right-6 top-0 duration-200 transition-all`}
+          ></div>
+          <div className="flex items-center gap-4">
+            <span className="p-1.5 rounded-full">
+              <LayoutDashboard size={14} strokeWidth={2} />
+            </span>
+            Email Templates
           </div>
         </Link>
       </div>

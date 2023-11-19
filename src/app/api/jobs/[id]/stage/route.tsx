@@ -9,6 +9,17 @@ const stageSchema = z.object({
   color: z.string(),
 });
 
+const stageOrderSchema = z.object({
+  item1: z.object({
+    id: z.string(),
+    order: z.number(),
+  }),
+  item2: z.object({
+    id: z.string(),
+    order: z.number(),
+  }),
+});
+
 export async function GET(
   request: Request,
   { params }: { params: { id: string } }
@@ -30,6 +41,19 @@ export async function GET(
       },
       orderBy: {
         order: "asc",
+      },
+      include: {
+        actions: {
+          include: {
+            note: true,
+            emailTemplate: {
+              select: {
+                id: true,
+                name: true,
+              },
+            },
+          },
+        },
       },
     });
 
@@ -104,6 +128,67 @@ export async function POST(
 
     return new NextResponse(JSON.stringify(pipeline), {
       status: 201,
+    });
+  } catch (error) {
+    console.log(error);
+    return new NextResponse(
+      JSON.stringify({ error: "The server failed to process the request." }),
+      {
+        status: 500,
+      }
+    );
+  }
+}
+
+export async function PATCH(
+  request: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return new NextResponse(
+        JSON.stringify({ error: "You must be authenticated to do this." }),
+        {
+          status: 401,
+        }
+      );
+    }
+
+    const stageReq = (await request.json()) as z.infer<typeof stageOrderSchema>;
+    const parsed = stageOrderSchema.safeParse(stageReq);
+
+    if (!parsed.success) {
+      return new NextResponse(
+        JSON.stringify({
+          status: "error",
+          message: parsed.error.errors[0].message,
+        }),
+        { status: 403 }
+      );
+    }
+
+    await Promise.all([
+      prisma.stage.update({
+        data: {
+          order: parsed.data.item1.order,
+        },
+        where: {
+          id: parsed.data.item1.id,
+        },
+      }),
+      prisma.stage.update({
+        data: {
+          order: parsed.data.item2.order,
+        },
+        where: {
+          id: parsed.data.item2.id,
+        },
+      }),
+    ]);
+
+    return new NextResponse(JSON.stringify({ status: "success" }), {
+      status: 200,
     });
   } catch (error) {
     console.log(error);

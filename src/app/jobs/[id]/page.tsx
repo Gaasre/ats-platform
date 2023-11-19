@@ -1,5 +1,4 @@
 import { Job } from "@/interfaces/job";
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { Chip } from "@nextui-org/chip";
 import { Divider } from "@nextui-org/divider";
@@ -8,10 +7,11 @@ import dynamic from "next/dynamic";
 import JobForm from "./job-form";
 const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
 
+export const revalidate = 60
+
 async function getJobDetails(id: string): Promise<Job & { error?: string }> {
   const req = await fetch(`http://localhost:3000/api/jobs/${id}/details`, {
-    method: "GET",
-    headers: headers()
+    method: "GET"
   });
 
   const res = await req.json();

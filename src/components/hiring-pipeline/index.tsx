@@ -44,12 +44,27 @@ function moveStage(jobId: string, stageId: string, direction: "up" | "down") {
   });
 }
 
+function changeOrder(
+  jobId: string,
+  item1: { id: string; order: number },
+  item2: { id: string; order: number }
+) {
+  return fetch(`http://localhost:3000/api/jobs/${jobId}/stage`, {
+    method: "PATCH",
+    body: JSON.stringify({
+      item1,
+      item2,
+    }),
+  });
+}
+
 export default function HiringPipeline({ jobId }: { jobId: string }) {
   return (
     <div className="p-4">
       <h1 className="text-xl mb-8">Customize the Hiring Pipeline</h1>
       <div className="flex flex-col gap-4 w-4/5">
         <PipelineList
+          onChangeOrder={(item1, item2) => changeOrder(jobId, item1, item2)}
           jobId={jobId}
           onConfirm={(id, title, color) => updateStage(jobId, id, title, color)}
           onDelete={(id) => deleteStage(jobId, id)}

@@ -16,39 +16,44 @@ export default function CustomForm({ form }: { form: CustomFieldType[] }) {
   function renderField(customField: CustomFieldType) {
     switch (customField.valueType) {
       case "RADIO":
-        const { onChange, ...id } = register(customField.id);
         return (
-          <RadioGroup
-            {...id}
-            label={customField.radioField?.label}
-            orientation={
-              customField.radioField?.orientation == Orientation.VERTICAL
-                ? "vertical"
-                : "horizontal"
-            }
-            onChange={(e) => onChange(e)}
-          >
-            {customField.radioField?.value.map((choice, index) => (
-              <Radio key={index} value={choice}>
-                {choice}
-              </Radio>
-            ))}
-          </RadioGroup>
+          <Controller
+            control={control}
+            name={customField.id}
+            render={({ field: { onChange, value } }) => (
+              <RadioGroup
+                label={customField.radioField?.label}
+                value={value}
+                orientation={
+                  customField.radioField?.orientation == Orientation.VERTICAL
+                    ? "vertical"
+                    : "horizontal"
+                }
+                onChange={onChange}
+              >
+                {customField.radioField?.value.map((choice) => (
+                  <Radio key={choice} value={choice}>
+                    {choice}
+                  </Radio>
+                ))}
+              </RadioGroup>
+            )}
+          />
         );
       case "DROPDOWN":
         if (customField.dropdownField) {
-          const { onChange, ...id } = register(customField.id);
           return (
             <Select
-              {...id}
+              {...register(customField.id)}
               label={customField.dropdownField?.label}
               placeholder="Value"
               className="max-w-xs"
               labelPlacement="outside"
-              onChange={(e) => onChange(e)}
             >
-              {customField.dropdownField.value.map((choice, index) => (
-                <SelectItem key={index}>{choice}</SelectItem>
+              {customField.dropdownField.value.map((choice) => (
+                <SelectItem key={choice} value={choice}>
+                  {choice}
+                </SelectItem>
               ))}
             </Select>
           );

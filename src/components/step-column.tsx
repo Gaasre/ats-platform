@@ -1,10 +1,7 @@
-import { Candidate } from "@/interfaces/candidate";
 import { useDroppable } from "@dnd-kit/core";
-import { Chip } from "@nextui-org/chip";
 import ApplicantCard from "./candidate-card";
 import { SortableContext } from "@dnd-kit/sortable";
 import { useMemo } from "react";
-import { Card, CardBody, CardHeader } from "@nextui-org/card";
 import { Stage } from "@/interfaces/stage";
 import { Divider } from "@nextui-org/divider";
 

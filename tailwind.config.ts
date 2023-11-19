@@ -51,10 +51,10 @@ const config: Config = {
             },
             default: {
               100: "#ebedf5",
-              DEFAULT: "#d8dbe8"
+              DEFAULT: "#d8dbe8",
             },
             focus: "#F182F6",
-          }
+          },
         },
       },
     }),
