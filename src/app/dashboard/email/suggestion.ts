@@ -5,10 +5,7 @@ import MentionList from "./MentionList.tsx";
 
 const Suggestion = {
   items: ({ query }: { query: any }) => {
-    return [
-      "Candidate.Firstname",
-      "Candidate.Lastname",
-    ]
+    return ["Candidate.Firstname", "Candidate.Lastname"]
       .filter((item) => item.toLowerCase().startsWith(query.toLowerCase()))
       .slice(0, 5);
   },
@@ -28,9 +25,8 @@ const Suggestion = {
           return;
         }
 
-        popup = tippy("body", {
+        popup = tippy(props.editor.options.element, {
           getReferenceClientRect: props.clientRect,
-          appendTo: () => document.body,
           content: component.element,
           showOnCreate: true,
           interactive: true,
@@ -46,14 +42,14 @@ const Suggestion = {
           return;
         }
 
-        popup[0].setProps({
+        popup.setProps({
           getReferenceClientRect: props.clientRect,
         });
       },
 
       onKeyDown(props: any) {
         if (props.event.key === "Escape") {
-          popup[0].hide();
+          popup.hide();
 
           return true;
         }
@@ -62,7 +58,7 @@ const Suggestion = {
       },
 
       onExit() {
-        popup[0].destroy();
+        popup.destroy();
         component.destroy();
       },
     };

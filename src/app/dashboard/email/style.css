@@ -1,9 +1,9 @@
 .tiptap {
-  @apply shadow-sm px-3 py-2 bg-default-100/50 transition-background outline-none rounded-medium min-h-[400px];
+  @apply shadow-sm px-4 py-3 bg-default-100 transition-background outline-none rounded-medium min-h-[400px];
 }
 
 .tiptap:hover {
-  @apply bg-default-100;
+  @apply bg-default-200;
 }
 
 .mention {

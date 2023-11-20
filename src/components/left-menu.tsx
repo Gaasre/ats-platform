@@ -7,8 +7,10 @@ import {
   KanbanSquare,
   LayoutDashboard,
   LogOut,
+  Mails,
   MessagesSquare,
   Settings,
+  Users2,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import {
@@ -183,7 +185,7 @@ export default function LeftMenu({ children }: { children: JSX.Element }) {
           ></div>
           <div className="flex items-center gap-4">
             <span className="p-1.5 rounded-full">
-              <LayoutDashboard size={14} strokeWidth={2} />
+              <Users2 size={14} strokeWidth={2} />
             </span>
             Team
           </div>
@@ -204,7 +206,7 @@ export default function LeftMenu({ children }: { children: JSX.Element }) {
           ></div>
           <div className="flex items-center gap-4">
             <span className="p-1.5 rounded-full">
-              <LayoutDashboard size={14} strokeWidth={2} />
+              <Mails size={14} strokeWidth={2} />
             </span>
             Email Templates
           </div>
