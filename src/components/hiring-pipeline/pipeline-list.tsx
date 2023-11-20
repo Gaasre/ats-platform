@@ -28,7 +28,7 @@ type Props = {
 async function getStages(
   jobId: string
 ): Promise<(Stage & { isEditing: boolean })[]> {
-  const res = await fetch(`/api/jobs/${jobId}/stage`, {
+  const res = await fetch(`/api/dashboard/jobs/${jobId}/stage`, {
     method: "GET",
   });
 
@@ -99,6 +99,8 @@ export default function PipelineList(props: Props) {
           <PipelineItem
             key={item.id}
             id={item.id}
+            jobId={props.jobId}
+            stageId={item.id}
             color={item.color}
             title={item.title}
             isEditing={item.isEditing}

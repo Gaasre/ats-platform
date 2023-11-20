@@ -59,3 +59,42 @@ export async function POST(
     );
   }
 }
+
+export async function GET(
+  request: Request,
+  { params: { id, stageId } }: { params: { id: string; stageId: string } }
+) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return new NextResponse(
+        JSON.stringify({ error: "You must be authenticated to do this." }),
+        {
+          status: 401,
+        }
+      );
+    }
+
+    const actions = await prisma.action.findMany({
+      where: {
+        stageId,
+      },
+      include: {
+        emailTemplate: true,
+        note: true,
+      },
+    });
+
+    return new NextResponse(JSON.stringify(actions), {
+      status: 200,
+    });
+  } catch (error) {
+    console.log(error);
+    return new NextResponse(
+      JSON.stringify({ error: "The server failed to process the request." }),
+      {
+        status: 500,
+      }
+    );
+  }
+}

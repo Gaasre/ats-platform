@@ -29,11 +29,15 @@ import {
 import { AnimatePresence, motion } from "framer-motion";
 import { Divider } from "@nextui-org/divider";
 import ActionItem from "./action-item";
+import NewEmailAction from "./email/new-email-action";
+import { Action, EmailTemplate, Note } from "@prisma/client";
 
 type Props = {
   id: string;
   title: string;
   color: string;
+  jobId: string;
+  stageId: string;
   isEditing: boolean;
   setIsEditing: (isEditing: boolean) => void;
   onDelete: () => void;
@@ -48,13 +52,29 @@ const colors = [
   { id: "success", name: "Green" },
 ];
 
+async function getActions(
+  jobId: string,
+  stageId: string
+): Promise<(Action & { emailTemplate: EmailTemplate; note: Note })[]> {
+  const req = await fetch(
+    `http://localhost:3000/api/dashboard/jobs/${jobId}/stage/${stageId}/action`,
+    {
+      method: "GET",
+    }
+  );
+
+  const res = await req.json();
+  return res;
+}
+
 export default function PipelineItem({
   id,
   title,
   color,
   isEditing,
   setIsEditing,
-
+  jobId,
+  stageId,
   onDelete,
   onConfirm,
 }: Props) {
@@ -63,10 +83,22 @@ export default function PipelineItem({
   const [isEditingActions, setIsEditingActions] = useState(false);
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
+  const [newEmailActionOpen, setNewEmailActionOpen] = useState(false);
+  const [actions, setActions] = useState<
+    (Action & { emailTemplate: EmailTemplate; note: Note })[]
+  >([]);
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
+  };
+
+  const editActions = async () => {
+    // get actions then open
+    const data = await getActions(jobId, stageId);
+    console.log(data);
+    setActions(data ? data : []);
+    setIsEditingActions(!isEditingActions);
   };
 
   return (
@@ -166,7 +198,7 @@ export default function PipelineItem({
                   </DropdownItem>
                   <DropdownItem
                     startContent={<Workflow size={14} />}
-                    onClick={() => setIsEditingActions(!isEditingActions)}
+                    onPress={editActions}
                     key="edit-actions"
                   >
                     Edit Actions
@@ -192,7 +224,9 @@ export default function PipelineItem({
                 exit={{ opacity: 0, height: 0 }}
               >
                 <div className="my-4">
-                  <ActionItem />
+                  {actions.map((action) => (
+                    <ActionItem key={action.id} action={action} />
+                  ))}
                 </div>
                 <div className="flex flex-row-reverse">
                   <Dropdown>
@@ -208,6 +242,7 @@ export default function PipelineItem({
                     </DropdownTrigger>
                     <DropdownMenu aria-label="Static Actions">
                       <DropdownItem
+                        onClick={() => setNewEmailActionOpen(true)}
                         startContent={<Mail size={16} />}
                         key="send-email"
                       >
@@ -222,16 +257,26 @@ export default function PipelineItem({
                     </DropdownMenu>
                   </Dropdown>
                 </div>
+                <AnimatePresence>
+                  {newEmailActionOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                    >
+                      <NewEmailAction
+                        jobId={jobId}
+                        stageId={stageId}
+                        onNew={(action) => {
+                          setActions([...actions, action]);
+                        }}
+                        onClose={() => setNewEmailActionOpen(false)}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
                 <Divider className="my-4"></Divider>
                 <div className="flex gap-1 mt-2">
-                  <Button
-                    variant="light"
-                    size="sm"
-                    aria-label="Confirm"
-                    onClick={() => setIsEditingActions(!isEditingActions)}
-                  >
-                    Save
-                  </Button>
                   <Button
                     variant="light"
                     size="sm"
@@ -239,9 +284,11 @@ export default function PipelineItem({
                     aria-label="Cancel"
                     onClick={() => {
                       setIsEditingActions(!isEditingActions);
+                      setActions([]);
+                      setNewEmailActionOpen(false);
                     }}
                   >
-                    Cancel
+                    Close
                   </Button>
                 </div>
               </motion.div>
