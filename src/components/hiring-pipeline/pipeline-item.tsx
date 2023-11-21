@@ -6,6 +6,7 @@ import {
   Check,
   ChevronDown,
   ChevronUp,
+  GripVertical,
   Mail,
   MoreVertical,
   Pencil,
@@ -31,6 +32,7 @@ import { Divider } from "@nextui-org/divider";
 import ActionItem from "./action-item";
 import NewEmailAction from "./email/new-email-action";
 import { Action, EmailTemplate, Note } from "@prisma/client";
+import { Badge, Chip } from "@nextui-org/react";
 
 type Props = {
   id: string;
@@ -93,16 +95,23 @@ export default function PipelineItem({
     transition,
   };
 
-  const editActions = async () => {
-    // get actions then open
+  const loadActions = async () => {
     const data = await getActions(jobId, stageId);
-    console.log(data);
     setActions(data ? data : []);
+  };
+
+  const editActions = async () => {
+    await loadActions();
     setIsEditingActions(!isEditingActions);
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      className="cursor-default"
+    >
       <Card
         className={`rounded-md w-full ${
           isEditing || isEditingActions
@@ -112,6 +121,11 @@ export default function PipelineItem({
       >
         <CardBody className="py-2.5 overflow-hidden">
           <div className="flex items-center gap-2">
+            <GripVertical
+              className="cursor-move mr-2 text-default-600"
+              {...listeners}
+              size={16}
+            />
             {isEditing ? (
               <div className="flex gap-4 w-full">
                 <Input
@@ -225,7 +239,14 @@ export default function PipelineItem({
               >
                 <div className="my-4">
                   {actions.map((action) => (
-                    <ActionItem key={action.id} action={action} />
+                    <ActionItem
+                      onDelete={() =>
+                        setActions(actions.filter((a) => a.id != action.id))
+                      }
+                      key={action.id}
+                      action={action}
+                      onEdit={loadActions}
+                    />
                   ))}
                 </div>
                 <div className="flex flex-row-reverse">
@@ -252,7 +273,8 @@ export default function PipelineItem({
                         startContent={<StickyNote size={16} />}
                         key="add-note"
                       >
-                        Add Note
+                        Add Note 
+                        <Chip size="sm" color="warning" variant="flat" className="ml-2">Soon</Chip>
                       </DropdownItem>
                     </DropdownMenu>
                   </Dropdown>
@@ -267,9 +289,7 @@ export default function PipelineItem({
                       <NewEmailAction
                         jobId={jobId}
                         stageId={stageId}
-                        onNew={(action) => {
-                          setActions([...actions, action]);
-                        }}
+                        onNew={loadActions}
                         onClose={() => setNewEmailActionOpen(false)}
                       />
                     </motion.div>

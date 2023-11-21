@@ -1,27 +1,39 @@
+"use client";
+
 import { redirect } from "next/navigation";
 import Steps from "./steps";
 import { Job } from "@/interfaces/job";
-import { headers } from "next/headers";
+import { useEffect, useState } from "react";
+import { CircularProgress } from "@nextui-org/react";
 
 async function getJobDetails(id: string): Promise<Job & { error?: string }> {
   const req = await fetch(`http://localhost:3000/api/dashboard/jobs/${id}`, {
     method: "GET",
-    headers: headers(),
   });
 
   const res = req.json();
   return res;
 }
 
-export default async function EditJobPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const job = await getJobDetails(params.id);
-  if (!job || job.error) {
-    redirect("/dashboard/jobs");
+export default function EditJobPage({ params }: { params: { id: string } }) {
+  const [job, setJob] = useState<Job>();
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+    getJobDetails(params.id).then((data) => {
+      if (!data.error) {
+        setJob(data);
+      }
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) {
+    <CircularProgress aria-label="Loading..." />;
   } else {
-    return <Steps job={job} id={params.id}></Steps>;
+    if (job) {
+      return <Steps job={job} id={params.id}></Steps>;
+    }
   }
 }
