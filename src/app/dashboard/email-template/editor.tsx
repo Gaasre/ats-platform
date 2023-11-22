@@ -56,7 +56,7 @@ const Editor = ({
         suggestion,
       }),
     ],
-    content: template && template.body ? JSON.parse(template.body) : "",
+    content: template && template.body ? template.body : "",
   });
 
   const [name, setName] = useState("");
@@ -68,9 +68,8 @@ const Editor = ({
       setSubject(template.subject);
       setName(template.name);
       if (editor) {
-        editor.commands.setContent(
-          template.body ? JSON.parse(template.body) : ""
-        );
+        editor.commands.setContent(template.body ? template.body : "");
+        console.log(template.body);
       }
     }
   }, [template]);
@@ -78,11 +77,10 @@ const Editor = ({
   const updateTemplate = async () => {
     setLoadingEdit(true);
     if (template && editor) {
-      console.log(editor.getJSON());
       const data = await updateEmailTemplate(template?.id, {
         name,
         subject,
-        body: JSON.stringify(editor.getJSON()),
+        body: editor.getHTML(),
       });
       if (!data.error) {
         onEdit(data);

@@ -17,13 +17,15 @@ import StepColumn from "./step-column";
 import { ICandidate } from "@/interfaces/candidate";
 import { arrayMove } from "@dnd-kit/sortable";
 import { Stage } from "@/interfaces/stage";
+import { Candidate } from "@prisma/client";
 
 type Props = {
   stages: Stage[];
-  onCandidateMove(newStageId: string, candidateId: string): void;
+  candidates: ICandidate[];
+  onCandidateMove(newStageId: string, candidate: ICandidate): void;
 };
 
-export default function Board({ stages, onCandidateMove }: Props) {
+export default function Board({ candidates, stages, onCandidateMove }: Props) {
   const [droppedId, setDroppedId] = useState<number | null>(null);
   const [activeCandidate, setActiveCandidate] = useState<ICandidate | null>();
   const mouseSensor = useSensor(MouseSensor, {
@@ -41,39 +43,25 @@ export default function Board({ stages, onCandidateMove }: Props) {
     }
   }
 
-  function onDragOver(event: DragOverEvent) {
+  function onDragEnd(event: DragEndEvent) {
     const { active, over } = event;
     if (!over) return;
 
     if (active.id === over.id) return;
 
     const isActiveACandidate = active.data.current?.type === "Candidate";
-    // const isOverACandidate = over.data.current?.type === "Candidate";
-
-    // // Dropping an Candidate over another Candidate
-    // if (isActiveACandidate && isOverACandidate) {
-    //   setCandidates((candidates) => {
-    //     const activeIndex = candidates.findIndex((a) => a.id == active.id);
-    //     const overIndex = candidates.findIndex((a) => a.id === over.id);
-
-    //     candidates[activeIndex].columnId = candidates[overIndex].columnId;
-
-    //     return arrayMove(candidates, activeIndex, overIndex);
-    //   });
-    // }
-
     const isOverAColumn = over.data.current?.type === "Column";
 
-    // Dropping an Candidate over a Column
-    if (isActiveACandidate && isOverAColumn) {
-      if (activeCandidate) {
-        onCandidateMove(over.id as string, activeCandidate.id);
+    if (isActiveACandidate && activeCandidate) {
+      if (isOverAColumn) {
+        if (over.id == active.data.current?.stageId) return;
+        console.log(over.id);
+        onCandidateMove(over.id as string, activeCandidate);
+      } else {
+        if (active.data.current?.stageId == over.data.current?.stageId) return;
+        console.log(over.data.current?.stageId);
+        onCandidateMove(over.data.current?.stageId as string, activeCandidate);
       }
-      // setCandidates((candidates) => {
-      //   const activeIndex = candidates.findIndex((a) => a.id == active.id);
-      //   candidates[activeIndex].columnId = parseInt(over.id.toString());
-      //   return arrayMove(candidates, activeIndex, activeIndex);
-      // });
     }
   }
 
@@ -81,16 +69,21 @@ export default function Board({ stages, onCandidateMove }: Props) {
     <div className="flex gap-6 h-full mt-4">
       <DndContext
         sensors={sensors}
-        onDragOver={onDragOver}
+        onDragEnd={onDragEnd}
         onDragStart={onDragStart}
       >
         {stages.map((stage) => (
-          <StepColumn stage={stage} key={stage.id} />
+          <StepColumn
+            candidates={candidates.filter((c) => c.stageId == stage.id)}
+            stage={stage}
+            key={stage.id}
+          />
         ))}
 
         <DragOverlay>
           {activeCandidate ? (
             <CandidateCard
+              stageId=""
               customClass="border-2 border-primary-400"
               candidate={activeCandidate}
             />

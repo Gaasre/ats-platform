@@ -7,6 +7,8 @@ import { Link } from "@nextui-org/link";
 import JobTabs from "./job-tabs";
 import { useEffect, useState } from "react";
 import { Spinner } from "@nextui-org/spinner";
+import { Candidate } from "@prisma/client";
+import { ICandidate } from "@/interfaces/candidate";
 
 async function getJobDetails(id: string): Promise<Job & { error?: string }> {
   const req = await fetch(`http://localhost:3000/api/dashboard/jobs/${id}`, {
@@ -29,6 +31,23 @@ export default function JobPage({
   const fetchData = async () => {
     const data = await getJobDetails(params.id);
     setJob(data);
+  };
+
+  const onUpdateCandidate = async (
+    newStageId: string,
+    candidate: ICandidate
+  ) => {
+    if (job) {
+      setJob({
+        ...job,
+        candidates: job?.candidates?.map((c) => {
+          if (c.id == candidate.id) {
+            return { ...c, stageId: newStageId };
+          }
+          return c;
+        }),
+      });
+    }
   };
 
   useEffect(() => {
@@ -63,7 +82,7 @@ export default function JobPage({
             </div>
           </div>
         </div>
-        <JobTabs onUpdate={fetchData} job={job}></JobTabs>
+        <JobTabs onUpdateCandidate={onUpdateCandidate} job={job}></JobTabs>
       </div>
     );
   }

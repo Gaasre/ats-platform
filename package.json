@@ -6,8 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "worker:parser": "npx tsx --watch src/workers/parser.worker.ts"
+    "lint": "next lint"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.441.0",
@@ -35,9 +34,11 @@
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
     "framer-motion": "^10.16.2",
+    "imap": "^0.8.19",
     "ioredis": "^5.3.2",
     "lodash": "^4.17.21",
     "lucide-react": "^0.274.0",
+    "mailparser": "^3.6.5",
     "moment": "^2.29.4",
     "next": "13.4.19",
     "openai": "^4.16.2",

@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import prisma from "@/lib/prisma";
+import { actionQueue } from "@/lib/queues";
 
 const stageSchema = z.object({
   stageId: z.string(),
@@ -37,10 +38,40 @@ export async function PATCH(
       );
     }
 
-    await prisma.candidate.update({
+    const candidate = await prisma.candidate.update({
       data: { stageId: parsed.data.stageId },
       where: { id: params.id },
     });
+
+    // see if the new stage has any action
+    const stage = await prisma.stage.findFirst({
+      where: {
+        id: parsed.data.stageId,
+      },
+      select: {
+        order: true,
+        actions: {
+          include: {
+            emailTemplate: true,
+            note: true,
+          },
+        },
+      },
+    });
+
+    if (
+      stage?.order &&
+      stage?.order > 0 &&
+      stage?.actions &&
+      stage.actions.length > 0
+    ) {
+      // send actions + company email settings to actionQueue
+      await actionQueue.add("executeActions", {
+        candidate,
+        stage,
+        company: session.user.Company,
+      });
+    }
 
     return new NextResponse(
       JSON.stringify({

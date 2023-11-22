@@ -38,13 +38,11 @@ export async function GET(
           orderBy: {
             order: "asc",
           },
+        },
+        candidates: {
           include: {
-            candidates: {
-              include: {
-                projects: true,
-                workExperience: true,
-              },
-            },
+            projects: true,
+            workExperience: true,
           },
         },
         form: {

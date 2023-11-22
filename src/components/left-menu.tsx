@@ -171,6 +171,27 @@ export default function LeftMenu({ children }: { children: JSX.Element }) {
         </p>
         <Link
           className={`hover:bg-primary-50 hover:after:opacity-0 hover:text-primary rounded-lg duration-200 font-medium py-2 relative ${
+            pathClass("email-settings").menu
+          }`}
+          isBlock
+          href="/dashboard/email-settings"
+          color="foreground"
+          size="sm"
+        >
+          <div
+            className={`${
+              pathClass("email-settings").attachment
+            } rounded-l h-full bg-primary absolute -right-6 top-0 duration-200 transition-all`}
+          ></div>
+          <div className="flex items-center gap-4">
+            <span className="p-1.5 rounded-full">
+              <Users2 size={14} strokeWidth={2} />
+            </span>
+            Email Settings
+          </div>
+        </Link>
+        <Link
+          className={`hover:bg-primary-50 hover:after:opacity-0 hover:text-primary rounded-lg duration-200 font-medium py-2 relative ${
             pathClass("team").menu
           }`}
           isBlock
@@ -192,16 +213,16 @@ export default function LeftMenu({ children }: { children: JSX.Element }) {
         </Link>
         <Link
           className={`hover:bg-primary-50 hover:after:opacity-0 hover:text-primary rounded-lg duration-200 font-medium py-2 relative ${
-            pathClass("email").menu
+            pathClass("email-template").menu
           }`}
           isBlock
-          href="/dashboard/email"
+          href="/dashboard/email-template"
           color="foreground"
           size="sm"
         >
           <div
             className={`${
-              pathClass("email").attachment
+              pathClass("email-template").attachment
             } rounded-l h-full bg-primary absolute -right-6 top-0 duration-200 transition-all`}
           ></div>
           <div className="flex items-center gap-4">

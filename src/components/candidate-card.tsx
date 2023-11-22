@@ -9,9 +9,14 @@ import CandidateInfos from "./candidate-infos";
 type Props = {
   candidate: ICandidate;
   customClass?: string;
+  stageId: string;
 };
 
-export default function CandidateCard({ candidate, customClass }: Props) {
+export default function CandidateCard({
+  candidate,
+  stageId,
+  customClass,
+}: Props) {
   const {
     attributes,
     listeners,
@@ -25,6 +30,7 @@ export default function CandidateCard({ candidate, customClass }: Props) {
     data: {
       type: "Candidate",
       candidate,
+      stageId,
     },
   });
 

@@ -5,5 +5,6 @@ import { Queue } from "bullmq";
 declare global {
   var prisma: PrismaClient;
   var S3: S3Client;
-  var parsingQueue: Queue
+  var parsingQueue: Queue;
+  var actionQueue: Queue;
 }

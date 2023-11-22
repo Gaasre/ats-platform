@@ -7,6 +7,8 @@ import JobTimeline from "./job-timeline";
 import { Job } from "@/interfaces/job";
 import JobDetails from "./job-details";
 import { useRouter } from "next/navigation";
+import { Candidate } from "@prisma/client";
+import { ICandidate } from "@/interfaces/candidate";
 
 async function sendChangeStage(stageId: string, candidateId: string) {
   const req = await fetch(
@@ -25,16 +27,20 @@ async function sendChangeStage(stageId: string, candidateId: string) {
 
 export default function JobTabs({
   job,
-  onUpdate,
+  onUpdateCandidate,
 }: {
   job: Job;
-  onUpdate(): void;
+  onUpdateCandidate(
+    newStageId: string,
+    candidate: ICandidate
+  ): void;
 }) {
-  const changeStage = async (stageId: string, candidateId: string) => {
-    const res = await sendChangeStage(stageId, candidateId);
-    if (!res.error) {
-      onUpdate();
-    }
+  const candidateMove = async (
+    newStageId: string,
+    candidate: ICandidate
+  ) => {
+    onUpdateCandidate(newStageId, candidate);
+    await sendChangeStage(newStageId, candidate.id);
   };
 
   return (
@@ -49,8 +55,9 @@ export default function JobTabs({
       >
         <div>
           <Board
+            candidates={job.candidates || []}
             stages={job.stages || []}
-            onCandidateMove={changeStage}
+            onCandidateMove={candidateMove}
           ></Board>
         </div>
       </Tab>

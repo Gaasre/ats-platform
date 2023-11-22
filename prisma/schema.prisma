@@ -110,6 +110,10 @@ model Company {
   website       String
   head          User?           @relation(fields: [headId], references: [id], onDelete: SetNull)
   headId        String?         @unique
+  emailHost     String          @default("")
+  emailPort     Int             @default(0)
+  emailUser     String          @default("")
+  emailPass     String          @default("")
   // Additional fields for company-related information
   // Example: industry, headquarters location, company size, etc.
   // Relationships

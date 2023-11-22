@@ -4,13 +4,16 @@ import { SortableContext } from "@dnd-kit/sortable";
 import { useMemo } from "react";
 import { Stage } from "@/interfaces/stage";
 import { Divider } from "@nextui-org/divider";
+import { ICandidate } from "@/interfaces/candidate";
 
 type Props = {
+  candidates: ICandidate[]
   stage: Stage;
 };
 
 export default function StepColumn({
-  stage: { candidates, title, id, color },
+  candidates,
+  stage: { title, id, color },
 }: Props) {
   const { isOver, setNodeRef } = useDroppable({
     id,
@@ -32,13 +35,15 @@ export default function StepColumn({
         >
           {title}
         </div>
-        <div className="w-6 h-6 text-xs font-bold rounded-full bg-foreground-200 text-foreground-800 flex items-center justify-center">{candidates.length}</div>
+        <div className="w-6 h-6 text-xs font-bold rounded-full bg-foreground-200 text-foreground-800 flex items-center justify-center">
+          {candidates.length}
+        </div>
       </div>
       <Divider className="my-1"></Divider>
       <div className="h-1/2 flex flex-col py-2 gap-2">
         <SortableContext items={candidateIds}>
           {candidates.map((candidate) => (
-            <ApplicantCard key={candidate.id} candidate={candidate} />
+            <ApplicantCard key={candidate.id} stageId={id} candidate={candidate} />
           ))}
         </SortableContext>
       </div>
