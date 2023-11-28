@@ -195,7 +195,7 @@ export default function LeftMenu({ children }: { children: JSX.Element }) {
             pathClass("team").menu
           }`}
           isBlock
-          href="#"
+          href="/dashboard/team"
           color="foreground"
           size="sm"
         >

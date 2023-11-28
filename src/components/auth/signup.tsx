@@ -1,22 +1,33 @@
 import { Input } from "@nextui-org/input";
 import { Button } from "@nextui-org/button";
 import { Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@nextui-org/link";
 import { signIn } from "next-auth/react";
 import axios from "axios";
 
 type Props = {
+  email: string;
+  name: string;
+  company: string;
+  invitationId: string;
   goBack: () => void;
 };
 
-export default function SignUp({ goBack }: Props) {
+export default function SignUp({ goBack, ...props }: Props) {
   const [isVisible, setIsVisible] = useState(false);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
+  const [company, setCompany] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    setCompany(props.company);
+    setName(props.name);
+    setEmail(props.email);
+  }, [props.email, props.name, props.company]);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -30,6 +41,7 @@ export default function SignUp({ goBack }: Props) {
         email,
         name,
         password,
+        invitationId: props.invitationId
       })
       .then((response) => {
         // Registration Success
@@ -62,6 +74,14 @@ export default function SignUp({ goBack }: Props) {
         </p>
         {!!error && <p className="text-danger mb-2 text-sm">{error}</p>}
         <Input
+          isDisabled
+          type="text"
+          variant="bordered"
+          label="Company"
+          className="mb-2"
+          value={company}
+        />
+        <Input
           type="text"
           variant="bordered"
           label="Name"
@@ -70,6 +90,7 @@ export default function SignUp({ goBack }: Props) {
           onValueChange={setName}
         />
         <Input
+          isDisabled={!!company}
           type="email"
           variant="bordered"
           label="Email"

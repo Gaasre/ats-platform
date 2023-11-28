@@ -68,7 +68,7 @@ export async function POST(request: Request) {
     if (!session.user?.companyId) {
       return new Response(
         JSON.stringify({
-          error: "ou must have a company to do this.",
+          error: "You must have a company to do this.",
         }),
         {
           status: 400,

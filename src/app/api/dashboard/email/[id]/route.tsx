@@ -29,7 +29,7 @@ export async function DELETE(
     if (!session.user?.companyId) {
       return new Response(
         JSON.stringify({
-          error: "ou must have a company to do this.",
+          error: "You must have a company to do this.",
         }),
         {
           status: 400,
@@ -77,7 +77,7 @@ export async function GET(
     if (!session.user?.companyId) {
       return new Response(
         JSON.stringify({
-          error: "ou must have a company to do this.",
+          error: "You must have a company to do this.",
         }),
         {
           status: 400,
@@ -132,7 +132,7 @@ export async function PUT(
     if (!session.user?.companyId) {
       return new Response(
         JSON.stringify({
-          error: "ou must have a company to do this.",
+          error: "You must have a company to do this.",
         }),
         {
           status: 400,

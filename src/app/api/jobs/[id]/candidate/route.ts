@@ -3,7 +3,7 @@ import S3 from "@/lib/s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import prisma from "@/lib/prisma";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
-import parsingQueue from "@/lib/queues";
+import { parsingQueue } from "@/lib/queues";
 
 export async function POST(
   request: NextRequest,

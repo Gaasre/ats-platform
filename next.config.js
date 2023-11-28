@@ -5,6 +5,9 @@ const nextConfig = {
 
     return config;
   },
+  experimental: {
+    serverComponentsExternalPackages: ["bullmq"],
+  },
 };
 
 module.exports = nextConfig;
