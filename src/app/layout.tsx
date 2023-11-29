@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { Providers } from "./providers";
+import NextTopLoader from "nextjs-toploader";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800"],
@@ -20,6 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${poppins.className} purple-dark`}>
+        <NextTopLoader color="#088587" />
         <Providers>{children}</Providers>
       </body>
     </html>
