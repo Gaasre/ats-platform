@@ -19,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <body className={`${poppins.className} purple-dark`}>
         <NextTopLoader color="#088587" />
         <Providers>{children}</Providers>

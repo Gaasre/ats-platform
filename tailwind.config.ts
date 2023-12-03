@@ -9,6 +9,7 @@ const config: Config = {
     "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   safelist: [
+    'bg-foreground-200',
     {
       pattern: /bg-(success|primary|warning|danger)-100/,
     },
