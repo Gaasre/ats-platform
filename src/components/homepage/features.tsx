@@ -4,7 +4,7 @@ import { Bot, Filter, FormInput, GitMerge } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import "./styles.css";
-import { useScroll } from "framer-motion";
+import { AnimatePresence, motion, useScroll } from "framer-motion";
 import { Button } from "@nextui-org/button";
 
 export default function Features() {
@@ -17,6 +17,7 @@ export default function Features() {
 
   const [selected, setSelected] = useState("");
   const [color, setColor] = useState("foreground-200");
+  const [detailsVisible, setDetailsVisible] = useState(false);
 
   const goTo = (block: string) => {
     switch (block) {
@@ -61,7 +62,36 @@ export default function Features() {
 
   return (
     <section id="features">
-      <div className="relative">
+      <div className="relative h-screen">
+        <AnimatePresence>
+          {detailsVisible && (
+            <motion.div
+              animate={{
+                opacity: 1,
+              }}
+              initial={{ opacity: 0 }}
+              exit={{ opacity: 0 }}
+              className="z-30 bg-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-screen fixed text-2xl text-black flex items-center justify-center"
+            >
+              <motion.div
+                layoutId="details"
+                className="bg-white border-2 border-[#FA826C] rounded-lg py-2 px-3 text-left"
+              >
+                <p className="font-bold text-xs text-[#CC6C5A]">
+                  Software Engineer
+                </p>
+                <p className="text-xs text-[#CC6C5A]">Company X</p>
+              </motion.div>
+              <Button
+                className="bg-black hover:bg-black/80 font-bold text-white absolute right-8 bottom-4"
+                size="sm"
+                onClick={() => setDetailsVisible(false)}
+              >
+                Back to Website
+              </Button>
+            </motion.div>
+          )}
+        </AnimatePresence>
         <Image
           src="/Left-rectangles.png"
           width={1040}
@@ -176,12 +206,15 @@ export default function Features() {
                     width={353}
                     alt="AI Resume Analyzer"
                   ></Image>
-                  <div className="absolute bottom-16 left-3 bg-white border-2 border-[#FA826C] rounded-lg py-2 px-3 text-left">
+                  <motion.div
+                    layoutId="details"
+                    className="absolute bottom-16 left-3 bg-white border-2 border-[#FA826C] rounded-lg py-2 px-3 text-left"
+                  >
                     <p className="font-bold text-xs text-[#CC6C5A]">
                       Software Engineer
                     </p>
                     <p className="text-xs text-[#CC6C5A]">Company X</p>
-                  </div>
+                  </motion.div>
                   <div className="absolute -bottom-6 left-0 bg-white border-2 border-[#FA826C] rounded-lg py-2 px-3 text-left">
                     <p className="font-bold text-xs text-[#CC6C5A]">
                       Personal Details
@@ -206,6 +239,7 @@ export default function Features() {
                 <Button
                   className="bg-black hover:bg-black/80 font-bold text-white absolute right-8 bottom-4"
                   size="sm"
+                  onClick={() => setDetailsVisible(true)}
                 >
                   Show me
                 </Button>
