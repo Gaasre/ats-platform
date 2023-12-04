@@ -1,31 +1,23 @@
-#features li {
+#features ul.features li {
   @apply rounded-xl py-6 px-3 text-left gap-8 w-[465px] flex transition-all shadow-none ease-in-out duration-300;
 }
 
-#features li {
+#features ul.features li {
   @apply select-none cursor-pointer;
 }
 
-#features li.active {
+#features ul.features li.active {
   @apply shadow-lg bg-white;
 }
 
-#features li span {
+#features ul.features li span {
   @apply h-14 w-14;
 }
 
-#features li h3 {
+#features ul.features li h3 {
   @apply text-xl font-bold mb-2;
 }
 
-#features li p {
+#features ul.features li p {
   @apply text-sm text-foreground-400;
-}
-
-#features .feature-image {
-    @apply opacity-0 transition-all duration-300
-}
-
-#features .feature-image.active {
-    @apply opacity-100
 }

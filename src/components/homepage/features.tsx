@@ -6,6 +6,58 @@ import { useEffect, useRef, useState } from "react";
 import "./styles.css";
 import { AnimatePresence, motion, useScroll } from "framer-motion";
 import { Button } from "@nextui-org/button";
+import Candidate from "@/components/candidate";
+import { ICandidate } from "@/interfaces/candidate";
+import ApplicationPlaceholder from "./application-placeholder";
+
+const candidate: ICandidate = {
+  id: "clox9ahbp0001um0kyh988jc1",
+  firstName: "John",
+  lastName: "Doe",
+  email: "johndoe@email.com",
+  phone: "123-456-7890",
+  resumeLink:
+    "https://pub-ccd5efe6d4824470bfd336f28a8d1322.r2.dev/resume-clox9ahbp0001um0kyh988jc1.pdf",
+  date: new Date("2023-11-13T18:46:51.444Z"),
+  customFields:
+    '[{"id":"clofy444x0001um1ck2mmumqi","type":"text","name":"Are you allowed to work in the job location ?","value":"Yes"},{"id":"clofy54qs0003um1cr2qqaa9h","type":"text","name":"What\'s your salary expectations ?","value":"60000"}]',
+  location: "New York, NY",
+  portfolio: "https://johndoeportfolio.com",
+  linkedin: "https://www.linkedin.com/in/johndoe",
+  github: "https://github.com/johndoe",
+  university: "University of XYZ",
+  educationLevel: "BS",
+  graduationDate: new Date("2023-05-15T00:00:00.000Z"),
+  majors: ["Computer Science"],
+  skills: ["Java", "Python", "JavaScript"],
+  languages: ["English", "Spanish"],
+  experienceYears: 2.5,
+  parsed: true,
+  stageId: "clobo4rr40009umj81047yrj0",
+  jobId: "clobo491k0007umj87im94wuq",
+  projects: [
+    {
+      id: 4,
+      name: "Project A",
+      description: "Developed a web application using React",
+      url: "https://projecta.com",
+      candidateId: "clox9ahbp0001um0kyh988jc1",
+    },
+  ],
+  workExperience: [
+    {
+      id: 5,
+      jobTitle: "Software Engineer",
+      company: "ABC Inc",
+      location: "San Francisco, CA",
+      startDate: new Date("2020-07-01T00:00:00.000Z"),
+      endDate: new Date("2022-06-30T00:00:00.000Z"),
+      duration: 2,
+      jobSummary: "Developed and maintained software applications",
+      candidateId: "clox9ahbp0001um0kyh988jc1",
+    },
+  ],
+};
 
 export default function Features() {
   const analyzer = useRef<HTMLLIElement>(null);
@@ -71,16 +123,13 @@ export default function Features() {
               }}
               initial={{ opacity: 0 }}
               exit={{ opacity: 0 }}
-              className="z-30 bg-white top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-screen fixed text-2xl text-black flex items-center justify-center"
+              className="z-30 bg-white/90 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-screen fixed text-2xl text-black flex items-center justify-center"
             >
               <motion.div
                 layoutId="details"
-                className="bg-white border-2 border-[#FA826C] rounded-lg py-2 px-3 text-left"
+                className="bg-white shadow-small relative rounded-lg flex flex-1 flex-col gap-3 p-6 max-w-5xl w-full"
               >
-                <p className="font-bold text-xs text-[#CC6C5A]">
-                  Software Engineer
-                </p>
-                <p className="text-xs text-[#CC6C5A]">Company X</p>
+                <Candidate candidate={candidate}></Candidate>
               </motion.div>
               <Button
                 className="bg-black hover:bg-black/80 font-bold text-white absolute right-8 bottom-4"
@@ -108,7 +157,7 @@ export default function Features() {
           </h2>
           <div className="grid grid-cols-2 gap-32">
             <div className="py-[400px]">
-              <ul className="space-y-12">
+              <ul className="space-y-12 features">
                 <li
                   className={`${selected == "analyzer" ? "active" : ""}`}
                   onClick={() => goTo("analyzer")}
@@ -195,47 +244,61 @@ export default function Features() {
               <div
                 className={`bg-${color} flex-grow-0 relative w-[500px] h-[500px] rounded-[43px] transition-all duration-300 ease-in-out flex items-center justify-center`}
               >
-                <div
-                  className={`feature-image relative ${
-                    selected == "analyzer" ? "active" : ""
-                  }`}
-                >
-                  <Image
-                    src="/analyzer.png"
-                    height={358}
-                    width={353}
-                    alt="AI Resume Analyzer"
-                  ></Image>
-                  <motion.div
-                    layoutId="details"
-                    className="absolute bottom-16 left-3 bg-white border-2 border-[#FA826C] rounded-lg py-2 px-3 text-left"
-                  >
-                    <p className="font-bold text-xs text-[#CC6C5A]">
-                      Software Engineer
-                    </p>
-                    <p className="text-xs text-[#CC6C5A]">Company X</p>
-                  </motion.div>
-                  <div className="absolute -bottom-6 left-0 bg-white border-2 border-[#FA826C] rounded-lg py-2 px-3 text-left">
-                    <p className="font-bold text-xs text-[#CC6C5A]">
-                      Personal Details
-                    </p>
-                    <p className="text-xs text-[#CC6C5A]">
-                      Paris - France - <u>Github</u>
-                    </p>
-                  </div>
-                  <div className="absolute bottom-20 right-[17px] bg-white border-2 border-[#FA826C] rounded-lg py-2 px-3 text-left">
-                    <p className="font-bold text-xs text-[#CC6C5A]">
-                      Engineering Degree
-                    </p>
-                    <p className="text-xs text-[#CC6C5A]">University X</p>
-                  </div>
-                  <div className="absolute bottom-0 right-[15px] bg-white border-2 border-[#FA826C] rounded-lg py-2 px-3 text-left">
-                    <p className="font-bold text-xs text-[#CC6C5A]">Skills</p>
-                    <p className="text-xs text-[#CC6C5A]">
-                      Java - Python - Git
-                    </p>
-                  </div>
-                </div>
+                <AnimatePresence>
+                  {selected == "analyzer" ? (
+                    <motion.div className="relative">
+                      <Image
+                        src="/analyzer.png"
+                        height={358}
+                        width={353}
+                        alt="AI Resume Analyzer"
+                      ></Image>
+                      <motion.div
+                        layoutId="education"
+                        className="absolute bottom-16 left-3 bg-white border-2 border-[#FA826C] rounded-lg py-2 px-3 text-left"
+                      >
+                        <p className="font-bold text-xs text-[#CC6C5A]">
+                          Software Engineer
+                        </p>
+                        <p className="text-xs text-[#CC6C5A]">Company X</p>
+                      </motion.div>
+                      <motion.div
+                        layoutId="personal"
+                        className="absolute -bottom-6 left-0 bg-white border-2 border-[#FA826C] rounded-lg py-2 px-3 text-left"
+                      >
+                        <p className="font-bold text-xs text-[#CC6C5A]">
+                          Personal Details
+                        </p>
+                        <p className="text-xs text-[#CC6C5A]">
+                          Paris - France - <u>Github</u>
+                        </p>
+                      </motion.div>
+                      <motion.div
+                        layoutId="experience"
+                        className="absolute bottom-20 right-[17px] bg-white border-2 border-[#FA826C] rounded-lg py-2 px-3 text-left"
+                      >
+                        <p className="font-bold text-xs text-[#CC6C5A]">
+                          Engineering Degree
+                        </p>
+                        <p className="text-xs text-[#CC6C5A]">University X</p>
+                      </motion.div>
+                      <div className="absolute bottom-0 right-[15px] bg-white border-2 border-[#FA826C] rounded-lg py-2 px-3 text-left">
+                        <p className="font-bold text-xs text-[#CC6C5A]">
+                          Skills
+                        </p>
+                        <p className="text-xs text-[#CC6C5A]">
+                          Java - Python - Git
+                        </p>
+                      </div>
+                    </motion.div>
+                  ) : selected == "application" ? (
+                    <motion.div>
+                      <ApplicationPlaceholder />
+                    </motion.div>
+                  ) : (
+                    ""
+                  )}
+                </AnimatePresence>
                 <Button
                   className="bg-black hover:bg-black/80 font-bold text-white absolute right-8 bottom-4"
                   size="sm"
