@@ -9,6 +9,9 @@ import { Button } from "@nextui-org/button";
 import Candidate from "@/components/candidate";
 import { ICandidate } from "@/interfaces/candidate";
 import ApplicationPlaceholder from "./application-placeholder";
+import ResumeAnalyzer from "./resume-analyzer";
+import Automation from "./automation";
+import ApplicationDetails from "./application-details";
 
 const candidate: ICandidate = {
   id: "clox9ahbp0001um0kyh988jc1",
@@ -68,8 +71,9 @@ export default function Features() {
   const { scrollYProgress } = useScroll();
 
   const [selected, setSelected] = useState("");
-  const [color, setColor] = useState("foreground-200");
+  const [color, setColor] = useState("primary-100");
   const [detailsVisible, setDetailsVisible] = useState(false);
+  const [open, setOpen] = useState("");
 
   const goTo = (block: string) => {
     switch (block) {
@@ -94,11 +98,11 @@ export default function Features() {
   const onChange = (value: number) => {
     if (value < 0.5) {
       setSelected("");
-      setColor("foreground-200");
-    } else if (value > 0.6 && value <= 0.72) {
+      setColor("primary-100");
+    } else if (value > 0.6 && value <= 0.7) {
       setSelected("analyzer");
       setColor("[#FCD5D4]");
-    } else if (value > 0.72 && value <= 0.82) {
+    } else if (value > 0.7 && value <= 0.82) {
       setSelected("application");
       setColor("[#D5EED8]");
     } else if (value > 0.82 && value <= 0.92) {
@@ -129,7 +133,17 @@ export default function Features() {
                 layoutId="details"
                 className="bg-white shadow-small relative rounded-lg flex flex-1 flex-col gap-3 p-6 max-w-5xl w-full"
               >
-                <Candidate candidate={candidate}></Candidate>
+                {open == "analyzer" ? (
+                  <Candidate candidate={candidate}></Candidate>
+                ) : open == "application" ? (
+                  <ApplicationDetails />
+                ) : open == "automation" ? (
+                  ""
+                ) : open == "filters" ? (
+                  ""
+                ) : (
+                  ""
+                )}
               </motion.div>
               <Button
                 className="bg-black hover:bg-black/80 font-bold text-white absolute right-8 bottom-4"
@@ -246,55 +260,11 @@ export default function Features() {
               >
                 <AnimatePresence>
                   {selected == "analyzer" ? (
-                    <motion.div className="relative">
-                      <Image
-                        src="/analyzer.png"
-                        height={358}
-                        width={353}
-                        alt="AI Resume Analyzer"
-                      ></Image>
-                      <motion.div
-                        layoutId="education"
-                        className="absolute bottom-16 left-3 bg-white border-2 border-[#FA826C] rounded-lg py-2 px-3 text-left"
-                      >
-                        <p className="font-bold text-xs text-[#CC6C5A]">
-                          Software Engineer
-                        </p>
-                        <p className="text-xs text-[#CC6C5A]">Company X</p>
-                      </motion.div>
-                      <motion.div
-                        layoutId="personal"
-                        className="absolute -bottom-6 left-0 bg-white border-2 border-[#FA826C] rounded-lg py-2 px-3 text-left"
-                      >
-                        <p className="font-bold text-xs text-[#CC6C5A]">
-                          Personal Details
-                        </p>
-                        <p className="text-xs text-[#CC6C5A]">
-                          Paris - France - <u>Github</u>
-                        </p>
-                      </motion.div>
-                      <motion.div
-                        layoutId="experience"
-                        className="absolute bottom-20 right-[17px] bg-white border-2 border-[#FA826C] rounded-lg py-2 px-3 text-left"
-                      >
-                        <p className="font-bold text-xs text-[#CC6C5A]">
-                          Engineering Degree
-                        </p>
-                        <p className="text-xs text-[#CC6C5A]">University X</p>
-                      </motion.div>
-                      <div className="absolute bottom-0 right-[15px] bg-white border-2 border-[#FA826C] rounded-lg py-2 px-3 text-left">
-                        <p className="font-bold text-xs text-[#CC6C5A]">
-                          Skills
-                        </p>
-                        <p className="text-xs text-[#CC6C5A]">
-                          Java - Python - Git
-                        </p>
-                      </div>
-                    </motion.div>
+                    <ResumeAnalyzer />
                   ) : selected == "application" ? (
-                    <motion.div>
-                      <ApplicationPlaceholder />
-                    </motion.div>
+                    <ApplicationPlaceholder />
+                  ) : selected == "automation" ? (
+                    <Automation />
                   ) : (
                     ""
                   )}
@@ -302,7 +272,10 @@ export default function Features() {
                 <Button
                   className="bg-black hover:bg-black/80 font-bold text-white absolute right-8 bottom-4"
                   size="sm"
-                  onClick={() => setDetailsVisible(true)}
+                  onClick={() => {
+                    setOpen(selected);
+                    setDetailsVisible(true);
+                  }}
                 >
                   Show me
                 </Button>
