@@ -12,6 +12,7 @@ import ApplicationPlaceholder from "./application-placeholder";
 import ResumeAnalyzer from "./resume-analyzer";
 import Automation from "./automation";
 import ApplicationDetails from "./application-details";
+import AutomationDetails from "./automation-details";
 
 const candidate: ICandidate = {
   id: "clox9ahbp0001um0kyh988jc1",
@@ -138,9 +139,9 @@ export default function Features() {
                 ) : open == "application" ? (
                   <ApplicationDetails />
                 ) : open == "automation" ? (
-                  ""
+                  <AutomationDetails />
                 ) : open == "filters" ? (
-                  ""
+                  <p className="text-2xl font-semibold text-center">SOON...</p>
                 ) : (
                   ""
                 )}
@@ -265,6 +266,8 @@ export default function Features() {
                     <ApplicationPlaceholder />
                   ) : selected == "automation" ? (
                     <Automation />
+                  ) : selected == "filters" ? (
+                    <p className="text-2xl font-semibold">SOON...</p>
                   ) : (
                     ""
                   )}
