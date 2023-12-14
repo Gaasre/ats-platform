@@ -9,7 +9,7 @@ export default function Pricing() {
   const [selected, setSelected] = useState("monthly");
   return (
     <section id="pricing">
-      <div className="text-center max-w-6xl mx-auto py-[100px] border-b">
+      <div className="text-center max-w-6xl mx-auto pt-[50px] pb-[100px] border-b">
         <h2 className="text-5xl font-semibold mb-8">
           Plans that fit your scale
         </h2>

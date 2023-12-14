@@ -22,7 +22,7 @@ export default function Hero() {
             </li>
             <li className="inline-block group relative">
               <div className="absolute w-0 h-0.5 bg-primary bottom-0 group-hover:w-full transition-all"></div>
-              <Link href="#">Pricing</Link>
+              <Link href="#pricing">Pricing</Link>
             </li>
             <li className="inline-block group relative">
               <div className="absolute w-0 h-0.5 bg-primary bottom-0 group-hover:w-full transition-all"></div>
