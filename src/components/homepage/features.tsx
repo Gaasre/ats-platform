@@ -118,8 +118,8 @@ export default function Features() {
   useEffect(() => scrollYProgress.on("change", (value) => onChange(value)), []);
 
   return (
-    <section id="features">
-      <div className="relative h-screen">
+    <section id="features" className="w-auto">
+      <div className="relative">
         <AnimatePresence>
           {detailsVisible && (
             <motion.div
@@ -164,11 +164,11 @@ export default function Features() {
           className="absolute -left-80 top-20"
         ></Image>
         <div className="max-w-7xl mx-auto text-center relative z-10">
-          <h2 className="text-4xl font-bold relative">
+          <h2 className="text-5xl font-semibold relative">
             <span className="z-10 relative">
               One Platform for Streamlined Global Hiring
             </span>
-            <div className="bg-primary-200 h-10 w-[158px] absolute top-0 left-[330px]"></div>
+            <div className="bg-primary-200 h-10 w-[205px] absolute top-0 left-[235px]"></div>
           </h2>
           <div className="grid grid-cols-2 gap-32">
             <div className="py-[400px]">
