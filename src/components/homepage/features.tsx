@@ -97,19 +97,20 @@ export default function Features() {
   };
 
   const onChange = (value: number) => {
-    if (value < 0.5) {
+    console.log(value);
+    if (value <= 0.28) {
       setSelected("");
       setColor("primary-100");
-    } else if (value > 0.6 && value <= 0.7) {
+    } else if (value > 0.34 && value <= 0.38) {
       setSelected("analyzer");
       setColor("[#FCD5D4]");
-    } else if (value > 0.7 && value <= 0.82) {
+    } else if (value > 0.38 && value <= 0.43) {
       setSelected("application");
       setColor("[#D5EED8]");
-    } else if (value > 0.82 && value <= 0.92) {
+    } else if (value > 0.43 && value <= 0.49) {
       setSelected("automation");
       setColor("[#C8E3FE]");
-    } else if (value > 0.92) {
+    } else if (value > 0.49) {
       setSelected("filters");
       setColor("[#FCF6D4]");
     }
@@ -164,12 +165,13 @@ export default function Features() {
           className="absolute -left-80 top-20"
         ></Image>
         <div className="max-w-7xl mx-auto text-center relative z-10">
-          <h2 className="text-5xl font-semibold relative">
+          <h2 className="text-primary font-semibold text-xs mb-2">Features</h2>
+          <h3 className="text-5xl font-semibold relative">
             <span className="z-10 relative">
               One Platform for Streamlined Global Hiring
             </span>
             <div className="bg-primary-200 h-10 w-[205px] absolute top-0 left-[235px]"></div>
-          </h2>
+          </h3>
           <div className="grid grid-cols-2 gap-32">
             <div className="py-[400px]">
               <ul className="space-y-12 features">

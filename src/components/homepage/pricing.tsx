@@ -9,14 +9,17 @@ export default function Pricing() {
   const [selected, setSelected] = useState("monthly");
   return (
     <section id="pricing">
-      <div className="text-center max-w-6xl mx-auto pt-[50px] pb-[100px] border-b">
-        <h2 className="text-5xl font-semibold mb-8">
-          Plans that fit your scale
+      <div className="text-center max-w-7xl mx-auto pt-[50px] pb-[100px] border-b">
+        <h2 className="text-primary mb-8 font-semibold text-xs">
+          Pricing
         </h2>
-        <h3 className="text-foreground-500 mb-12">
+        <h3 className="text-5xl font-semibold mb-8">
+          Plans that fit your scale
+        </h3>
+        <p className="text-foreground-500 mb-12">
           Simple, transparent pricing that grows with you. Schedule a Demo
           Today!
-        </h3>
+        </p>
         <div className="mb-24">
           <ul className="flex mx-auto bg-foreground-50 w-fit p-1 gap-2 rounded-md text-sm select-none">
             <li
