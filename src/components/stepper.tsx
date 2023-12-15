@@ -7,7 +7,7 @@ type Props = {
   onStepChange: (step: number) => void;
 };
 
-const steps = ["Job Details", "Application Form", "Hiring Pipeline"];
+const steps = ["Job Details", "Application Form", "Hiring Pipeline", "Candidate Filters"];
 
 export default function Stepper(props: Props) {
   const currentVariant = (idx: number) => (props.step < idx ? "light" : "flat");

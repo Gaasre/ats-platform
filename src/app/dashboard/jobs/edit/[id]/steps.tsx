@@ -13,6 +13,7 @@ import Stepper from "@/components/stepper";
 import { useRouter } from "next/navigation";
 import { AlertCircle, Ban } from "lucide-react";
 import { Job } from "@/interfaces/job";
+import Filters from "@/components/filters";
 
 async function updateDetails(
   id: string,
@@ -34,6 +35,8 @@ function StepComponent({ step, jobId }: { step: number; jobId: string }) {
     return <ApplicationForm jobId={jobId} />;
   } else if (step == 2) {
     return <HiringPipeline jobId={jobId} />;
+  } else if (step == 3) {
+    return <Filters jobId={jobId} />;
   }
 }
 
@@ -79,13 +82,14 @@ export default function Steps({ id, job }: { id: string; job: Job }) {
           ) : (
             ""
           )}
-          {step < 2 ? (
-            <Button onClick={nextStep} variant="solid" color="primary">
-              Next
-            </Button>
-          ) : (
-            ""
-          )}
+          <Button
+            isDisabled={step == 3}
+            onClick={nextStep}
+            variant="solid"
+            color="primary"
+          >
+            Next
+          </Button>
         </div>
       </div>
       <Card>
