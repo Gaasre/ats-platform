@@ -93,7 +93,7 @@ export async function POST() {
             data: [
               {
                 title: "Applied",
-                color: "danger",
+                color: "warning",
                 order: 0,
               },
             ],

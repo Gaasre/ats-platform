@@ -1,11 +1,7 @@
-"use client";
-
 import { Card, CardHeader, CardBody } from "@nextui-org/card";
 import { Button } from "@nextui-org/button";
 import {
-  Check,
-  ChevronDown,
-  ChevronUp,
+  Lock,
   GripVertical,
   Mail,
   MoreVertical,
@@ -14,7 +10,6 @@ import {
   StickyNote,
   Trash,
   Workflow,
-  X,
 } from "lucide-react";
 import { useState } from "react";
 import { Input } from "@nextui-org/input";
@@ -41,6 +36,7 @@ type Props = {
   jobId: string;
   stageId: string;
   isEditing: boolean;
+  order: number;
   setIsEditing: (isEditing: boolean) => void;
   onDelete: () => void;
   onConfirm: (title: string, color: string) => void;
@@ -74,6 +70,7 @@ export default function PipelineItem({
   title,
   color,
   isEditing,
+  order,
   setIsEditing,
   jobId,
   stageId,
@@ -117,15 +114,21 @@ export default function PipelineItem({
           isEditing || isEditingActions
             ? `border-2 border-${internalColor}`
             : "border"
-        } shadow`}
+        } ${
+          order == 0 ? "bg-foreground-100 text-foreground-500" : ""
+        } shadow select-none`}
       >
         <CardBody className="py-2.5 overflow-hidden">
           <div className="flex items-center gap-2">
-            <GripVertical
-              className="cursor-move mr-2 text-default-600"
-              {...listeners}
-              size={16}
-            />
+            {order == 0 ? (
+              <Lock size={16} className="text-foreground-500" />
+            ) : (
+              <GripVertical
+                className="cursor-move mr-2 text-default-600"
+                {...listeners}
+                size={16}
+              />
+            )}
             {isEditing ? (
               <div className="flex gap-4 w-full">
                 <Input
@@ -202,7 +205,13 @@ export default function PipelineItem({
                     <MoreVertical size={16} />
                   </Button>
                 </DropdownTrigger>
-                <DropdownMenu variant="faded" aria-label="Stage Dropdown">
+                <DropdownMenu
+                  variant="faded"
+                  aria-label="Stage Dropdown"
+                  disabledKeys={
+                    order == 0 ? ["edit", "edit-actions", "delete"] : []
+                  }
+                >
                   <DropdownItem
                     startContent={<Pencil size={14} />}
                     onClick={() => setIsEditing(!isEditing)}
@@ -273,8 +282,15 @@ export default function PipelineItem({
                         startContent={<StickyNote size={16} />}
                         key="add-note"
                       >
-                        Add Note 
-                        <Chip size="sm" color="warning" variant="flat" className="ml-2">Soon</Chip>
+                        Add Note
+                        <Chip
+                          size="sm"
+                          color="warning"
+                          variant="flat"
+                          className="ml-2"
+                        >
+                          Soon
+                        </Chip>
                       </DropdownItem>
                     </DropdownMenu>
                   </Dropdown>

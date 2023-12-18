@@ -21,8 +21,6 @@ type Props = {
     item1: { id: string; order: number },
     item2: { id: string; order: number }
   ) => void;
-  onUp: (id: string) => void;
-  onDown: (id: string) => void;
 };
 
 async function getStages(
@@ -93,41 +91,78 @@ export default function PipelineList(props: Props) {
   }
 
   return (
-    <DndContext onDragEnd={handleDragEnd}>
-      <SortableContext items={stages} strategy={verticalListSortingStrategy}>
-        {stages.map((item, index) => (
-          <PipelineItem
-            key={item.id}
-            id={item.id}
-            jobId={props.jobId}
-            stageId={item.id}
-            color={item.color}
-            title={item.title}
-            isEditing={item.isEditing}
-            onConfirm={(title, color) => {
-              props.onConfirm(item.id, title, color);
-              const newPipeline = [...stages];
-              newPipeline[index] = {
-                ...newPipeline[index],
-                title,
-                color,
-                isEditing: false,
-              };
-              setStages(newPipeline);
-            }}
-            onDelete={() => {
-              props.onDelete(item.id);
-              const newPipeline = [...stages];
-              setStages(newPipeline.filter(({ id }) => id !== item.id));
-            }}
-            setIsEditing={(isEditing) => {
-              const newPipeline = [...stages];
-              newPipeline[index] = { ...newPipeline[index], isEditing };
-              setStages(newPipeline);
-            }}
-          ></PipelineItem>
-        ))}
-      </SortableContext>
-    </DndContext>
+    <>
+      <PipelineItem
+        order={0}
+        key={stages[0].id}
+        id={stages[0].id}
+        jobId={props.jobId}
+        stageId={stages[0].id}
+        color={stages[0].color}
+        title={stages[0].title}
+        isEditing={stages[0].isEditing}
+        onConfirm={(title, color) => {
+          props.onConfirm(stages[0].id, title, color);
+          const newPipeline = [...stages];
+          newPipeline[0] = {
+            ...newPipeline[0],
+            title,
+            color,
+            isEditing: false,
+          };
+          setStages(newPipeline);
+        }}
+        onDelete={() => {
+          props.onDelete(stages[0].id);
+          const newPipeline = [...stages];
+          setStages(newPipeline.filter(({ id }) => id !== stages[0].id));
+        }}
+        setIsEditing={(isEditing) => {
+          const newPipeline = [...stages];
+          newPipeline[0] = { ...newPipeline[0], isEditing };
+          setStages(newPipeline);
+        }}
+      ></PipelineItem>
+      <DndContext onDragEnd={handleDragEnd}>
+        <SortableContext
+          items={stages.slice(1)}
+          strategy={verticalListSortingStrategy}
+        >
+          {stages.slice(1).map((item, index) => (
+            <PipelineItem
+              order={item.order}
+              key={item.id}
+              id={item.id}
+              jobId={props.jobId}
+              stageId={item.id}
+              color={item.color}
+              title={item.title}
+              isEditing={item.isEditing}
+              onConfirm={(title, color) => {
+                props.onConfirm(item.id, title, color);
+                const newPipeline = [...stages];
+                newPipeline[index] = {
+                  ...newPipeline[index],
+                  title,
+                  color,
+                  isEditing: false,
+                };
+                setStages(newPipeline);
+              }}
+              onDelete={() => {
+                props.onDelete(item.id);
+                const newPipeline = [...stages];
+                setStages(newPipeline.filter(({ id }) => id !== item.id));
+              }}
+              setIsEditing={(isEditing) => {
+                const newPipeline = [...stages];
+                newPipeline[index] = { ...newPipeline[index], isEditing };
+                setStages(newPipeline);
+              }}
+            ></PipelineItem>
+          ))}
+        </SortableContext>
+      </DndContext>
+    </>
   );
 }

@@ -15,7 +15,7 @@ async function addStage(jobId: string, title: string, color: string) {
 }
 
 function deleteStage(jobId: string, stageId: string) {
-  return fetch(`http://localhost:3000/api/jobs/${jobId}/stage/${stageId}`, {
+  return fetch(`http://localhost:3000/api/dashboard/jobs/${jobId}/stage/${stageId}`, {
     method: "DELETE",
   });
 }
@@ -26,20 +26,11 @@ function updateStage(
   title: string,
   color: string
 ) {
-  return fetch(`http://localhost:3000/api/jobs/${jobId}/stage/${stageId}`, {
+  return fetch(`http://localhost:3000/api/dashboard/jobs/${jobId}/stage/${stageId}`, {
     method: "PUT",
     body: JSON.stringify({
       title,
       color,
-    }),
-  });
-}
-
-function moveStage(jobId: string, stageId: string, direction: "up" | "down") {
-  return fetch(`http://localhost:3000/api/jobs/${jobId}/stage/${stageId}`, {
-    method: "PATCH",
-    body: JSON.stringify({
-      direction,
     }),
   });
 }
@@ -49,7 +40,7 @@ function changeOrder(
   item1: { id: string; order: number },
   item2: { id: string; order: number }
 ) {
-  return fetch(`http://localhost:3000/api/jobs/${jobId}/stage`, {
+  return fetch(`http://localhost:3000/api/dashboard/jobs/${jobId}/stage`, {
     method: "PATCH",
     body: JSON.stringify({
       item1,
@@ -68,8 +59,6 @@ export default function HiringPipeline({ jobId }: { jobId: string }) {
           jobId={jobId}
           onConfirm={(id, title, color) => updateStage(jobId, id, title, color)}
           onDelete={(id) => deleteStage(jobId, id)}
-          onUp={(id) => moveStage(jobId, id, "up")}
-          onDown={(id) => moveStage(jobId, id, "down")}
         />
       </div>
       <div className="mt-6 w-4/5">
