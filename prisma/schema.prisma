@@ -104,6 +104,7 @@ model Job {
   candidates          Candidate[]
   active              Boolean       @default(false)
   form                CustomField[]
+  filters             Filter[]
 }
 
 model Stage {
@@ -236,6 +237,7 @@ model Candidate {
   experienceYears Float?
   projects        Project[]
   parsed          Boolean          @default(false)
+  passedFilter    Boolean          @default(true)
   // Relationships
   stage           Stage            @relation(fields: [stageId], references: [id])
   stageId         String
@@ -290,6 +292,23 @@ model EmailTemplate {
   actions   Action[]
   company   Company  @relation(fields: [companyId], references: [id])
   companyId String
+}
+
+model Filter {
+  id       String   @id @default(cuid())
+  field    String   @default("Education level")
+  operator Operator @default(EQUAL)
+  value    String   @default("")
+  Job      Job?     @relation(fields: [jobId], references: [id])
+  jobId    String?
+}
+
+enum Operator {
+  EQUAL
+  HIGHER
+  LOWER
+  NOTEQUAL
+  INCLUDES
 }
 
 enum ActionType {

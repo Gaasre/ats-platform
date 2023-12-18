@@ -144,7 +144,11 @@ export async function POST(
     });
 
     // Add to queue for parsing
-    // await parsingQueue.add("parseResume", { id });
+    await parsingQueue.add(
+      "parseResume",
+      { id, jobId: params.id },
+      { delay: 5000 }
+    );
 
     return new NextResponse(
       JSON.stringify({

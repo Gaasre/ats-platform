@@ -88,6 +88,17 @@ export async function POST() {
       data: {
         title: "Untitled job",
         companyId: user.companyId,
+        stages: {
+          createMany: {
+            data: [
+              {
+                title: "Applied",
+                color: "danger",
+                order: 0,
+              },
+            ],
+          },
+        },
       },
       select: {
         id: true,
