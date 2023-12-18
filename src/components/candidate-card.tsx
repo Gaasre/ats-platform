@@ -5,6 +5,8 @@ import { Card, CardBody } from "@nextui-org/card";
 import { Avatar } from "@nextui-org/avatar";
 import moment from "moment";
 import CandidateInfos from "./candidate-infos";
+import { Chip, Tooltip } from "@nextui-org/react";
+import { Ban, Check } from "lucide-react";
 
 type Props = {
   candidate: ICandidate;
@@ -61,9 +63,32 @@ export default function CandidateCard({
             <Avatar className="bg-default-100" name={candidate.firstName} />
           </div>
           <div className="flex-1 overflow-hidden">
-            <p className="font-semibold whitespace-nowrap overflow-hidden text-ellipsis">
-              {candidate.firstName} {candidate.lastName}
-            </p>
+            <div className="flex gap-1 items-center">
+            <Tooltip
+                content={
+                  candidate.passedFilter
+                    ? "Passed the filter"
+                    : "Didn't pass the filter"
+                }
+              >
+                <div
+                  className={`rounded-full p-0.5 ${
+                    candidate.passedFilter
+                      ? "bg-success-100 text-success-800"
+                      : "bg-danger-100 text-danger-800"
+                  }`}
+                >
+                  {candidate.passedFilter ? (
+                    <Check size={10} />
+                  ) : (
+                    <Ban size={10} />
+                  )}
+                </div>
+              </Tooltip>
+              <p className="font-semibold whitespace-nowrap overflow-hidden text-ellipsis">
+                {candidate.firstName} {candidate.lastName}
+              </p>
+            </div>
             <p className="text-xs text-foreground-500 mb-2">
               {moment(candidate.date).fromNow()}
             </p>

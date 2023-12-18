@@ -61,7 +61,11 @@ export default function Candidate({ candidate }: { candidate: ICandidate }) {
               </p>
               <a
                 target="_blank"
-                href={candidate.linkedin!}
+                href={
+                  candidate.linkedin?.includes("http")
+                    ? candidate.linkedin
+                    : `https://${candidate.linkedin}`
+                }
                 className="flex-1 text-right overflow-ellipsis overflow-hidden max-w-1/2"
               >
                 {candidate.linkedin}
