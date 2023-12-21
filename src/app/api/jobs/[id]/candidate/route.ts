@@ -4,6 +4,7 @@ import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import prisma from "@/lib/prisma";
 import { PutObjectCommand } from "@aws-sdk/client-s3";
 import { parsingQueue } from "@/lib/queues";
+import { Source } from "@prisma/client";
 
 export async function POST(
   request: NextRequest,
@@ -69,6 +70,7 @@ export async function POST(
           "firstName",
           "lastName",
           "phone",
+          "source",
           "fileKeys",
         ].includes(key)
       ) {
@@ -105,6 +107,11 @@ export async function POST(
         firstName: data.get("firstName") as string,
         lastName: data.get("lastName") as string,
         phone: data.get("phone") as string,
+        source:
+          data.get("source")?.toString().toLowerCase() == "linkedin" ||
+          data.get("source")?.toString().toLowerCase() == "indeed"
+            ? (data.get("source") as Source)
+            : "Other",
         customFields: JSON.stringify(customFields),
         date: new Date(),
         jobId: params.id,
@@ -144,11 +151,11 @@ export async function POST(
     });
 
     // Add to queue for parsing
-    await parsingQueue.add(
-      "parseResume",
-      { id, jobId: params.id },
-      { delay: 5000 }
-    );
+    // await parsingQueue.add(
+    //   "parseResume",
+    //   { id, jobId: params.id },
+    //   { delay: 5000 }
+    // );
 
     return new NextResponse(
       JSON.stringify({

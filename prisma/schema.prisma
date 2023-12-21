@@ -243,6 +243,13 @@ model Candidate {
   stageId         String
   Job             Job              @relation(fields: [jobId], references: [id])
   jobId           String
+  source          Source           @default(Other)
+}
+
+enum Source {
+  Linkedin
+  Indeed
+  Other
 }
 
 model WorkExperience {

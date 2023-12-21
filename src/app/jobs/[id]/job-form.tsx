@@ -14,9 +14,12 @@ import {
 } from "react-hook-form";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { Source } from "@prisma/client";
 
-async function submitForm(form: FieldValues, jobId: string) {
+async function submitForm(form: FieldValues, jobId: string, source: Source) {
   const formData = new FormData();
+  formData.append("source", source);
+
   const fileKeys = [];
 
   for (var key in form) {
@@ -60,9 +63,11 @@ async function submitForm(form: FieldValues, jobId: string) {
 export default function JobForm({
   job,
   form,
+  source,
 }: {
   job: Job;
   form: CustomFieldType[];
+  source: Source;
 }) {
   const methods = useForm();
   const [success, setSuccess] = useState(false);
@@ -139,7 +144,7 @@ export default function JobForm({
             <form
               onSubmit={handleSubmit(async (data) => {
                 setLoading(true);
-                const res = await submitForm(data, job.id);
+                const res = await submitForm(data, job.id, source);
                 setLoading(false);
                 if (!res.error) {
                   setSuccess(true);

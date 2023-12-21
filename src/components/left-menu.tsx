@@ -64,7 +64,7 @@ export default function LeftMenu({ children }: { children: JSX.Element }) {
             pathClass("dashboard").menu
           }`}
           isBlock
-          href="#"
+          href="/dashboard"
           color="foreground"
           size="sm"
         >

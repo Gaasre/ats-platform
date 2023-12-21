@@ -1,10 +1,28 @@
 import { IInvitation } from "@/interfaces/invitation";
+import { DailyCandidateStats, SourceGraph } from "@/interfaces/stats";
 import { Filter, Operator } from "@prisma/client";
 
 export async function getInvitation(
   id: string
 ): Promise<IInvitation & { error?: string }> {
   const req = await fetch(`http://localhost:3000/api/invitation/${id}`, {
+    method: "GET",
+  });
+
+  const res = await req.json();
+  return res;
+}
+
+export async function getStats(): Promise<
+  {
+    sourceGraph: SourceGraph;
+    candidates: DailyCandidateStats;
+    activeJobs: number;
+    expiredJobs: number;
+    filter: { name: string; value: number }[];
+  } & { error?: string }
+> {
+  const req = await fetch(`http://localhost:3000/api/dashboard/stats`, {
     method: "GET",
   });
 

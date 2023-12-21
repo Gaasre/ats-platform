@@ -5,13 +5,14 @@ import { Divider } from "@nextui-org/divider";
 
 import dynamic from "next/dynamic";
 import JobForm from "./job-form";
+import { Source } from "@prisma/client";
 const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
 
-export const revalidate = 60
+export const revalidate = 60;
 
 async function getJobDetails(id: string): Promise<Job & { error?: string }> {
   const req = await fetch(`http://localhost:3000/api/jobs/${id}/details`, {
-    method: "GET"
+    method: "GET",
   });
 
   const res = await req.json();
@@ -32,9 +33,13 @@ const EUR = new Intl.NumberFormat("en-US", {
 
 export default async function JobPost({
   params,
+  searchParams,
 }: {
   params: {
     id: string;
+  };
+  searchParams: {
+    source: string;
   };
 }) {
   const job = await getJobDetails(params.id);
@@ -75,7 +80,11 @@ export default async function JobPost({
               <h2 className="text-3xl font-bold">Job description</h2>
               <Divider className="mt-4 mb-8" />
               <Editor isEditor={false} initialContent={job.description} />
-              <JobForm job={job} form={job.form}></JobForm>
+              <JobForm
+                job={job}
+                form={job.form}
+                source={searchParams.source as Source}
+              ></JobForm>
             </div>
             <div className="p-8">I will put something here</div>
           </div>

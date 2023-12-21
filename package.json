@@ -22,6 +22,7 @@
     "@tiptap/pm": "^2.1.12",
     "@tiptap/react": "^2.1.12",
     "@tiptap/starter-kit": "^2.1.12",
+    "@tremor/react": "^3.12.1",
     "@types/axios": "^0.14.0",
     "@types/node": "20.5.7",
     "@types/react": "18.2.21",
